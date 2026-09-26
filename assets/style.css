@@ -1,0 +1,86 @@
+/* Death Cafe 공통 스타일 */
+:root{
+  --bg:#f6f4ef; --surface:#ffffff; --surface-2:#efebe2;
+  --text:#1a222c; --text-soft:#4b5561; --text-faint:#7a838c;
+  --line:#dcd5c5; --accent:#a2672a; --accent-ink:#fbf7ef; --accent-soft:#f3e4c9;
+  --band:#1d2733; --band-text:#ece6d9; --band-soft:#b3ab9b; --band-accent:#e0b46f;
+  --danger:#a23c2c; --ok:#3f6b4a; --focus:#c98a3e;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#121820; --surface:#1b2430; --surface-2:#222d3a;
+    --text:#ece7dc; --text-soft:#b8b1a2; --text-faint:#8a8476;
+    --line:#324050; --accent:#e0b46f; --accent-ink:#1a1308; --accent-soft:#3a2f1f;
+    --band:#0b1016; --band-text:#ece6d9; --band-soft:#a79f8f; --band-accent:#e0b46f;
+    --danger:#e0806f; --ok:#8fc39c; --focus:#e0b46f;
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Noto Sans KR',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word;}
+img{max-width:100%;display:block;}
+h1,h2,h3{font-family:'Noto Serif KR','Nanum Myeongjo',serif;margin:0;line-height:1.35;text-wrap:balance;}
+a{color:inherit;}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;}
+[hidden]{display:none!important;}
+.wrap{max-width:960px;margin:0 auto;padding-inline:20px;}
+.narrow{max-width:780px;}
+.eyebrow{font-size:.76rem;letter-spacing:.14em;color:var(--accent);font-weight:700;}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+
+/* 시범 운영 안내 */
+.pilot{font-size:.82rem;color:var(--text-soft);background:var(--surface-2);border-bottom:1px dashed var(--line);padding:8px 20px;margin:0;text-align:center;}
+
+/* 머리글 */
+#site-header{position:sticky;top:0;z-index:10;}
+.site-header{background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding-block:12px;}
+.logo{text-decoration:none;display:flex;align-items:baseline;gap:8px;}
+.logo .en{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.45rem;font-weight:500;letter-spacing:.02em;}
+.logo .ko{font-size:.78rem;color:var(--text-faint);}
+.site-nav{display:flex;gap:2px;flex-wrap:wrap;}
+.site-nav a{text-decoration:none;font-size:.9rem;color:var(--text-soft);padding:6px 11px;border-radius:999px;}
+.site-nav a:hover{background:var(--accent-soft);color:var(--text);}
+.site-nav a[aria-current="page"]{background:var(--accent-soft);color:var(--text);font-weight:500;}
+
+/* 버튼·입력 */
+.btn{display:inline-block;text-decoration:none;font:inherit;font-weight:700;font-size:.95rem;padding:12px 22px;border-radius:8px;border:1px solid transparent;cursor:pointer;}
+.btn-primary{background:var(--accent);color:var(--accent-ink);}
+.btn-ghost{border-color:var(--line);color:var(--text);background:transparent;}
+.btn-ghost:hover{border-color:var(--accent);}
+.btn-small{padding:7px 14px;font-size:.84rem;font-weight:500;}
+.btn-danger{border-color:var(--danger);color:var(--danger);background:transparent;}
+input[type="text"],input[type="password"],input[type="tel"],input[type="email"],select,textarea{width:100%;padding:11px 13px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:inherit;font-size:.95rem;}
+textarea{resize:vertical;}
+.field{display:flex;flex-direction:column;gap:5px;}
+.field label,.legend{font-size:.86rem;font-weight:500;color:var(--text-soft);}
+.req{color:var(--accent);margin-left:2px;}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media (max-width:540px){.row{grid-template-columns:1fr;}}
+.pills{display:flex;gap:8px;flex-wrap:wrap;}
+.pill{position:relative;}
+.pill input{position:absolute;opacity:0;inset:0;}
+.pill span{display:inline-block;padding:8px 16px;border-radius:999px;border:1px solid var(--line);font-size:.88rem;cursor:pointer;color:var(--text-soft);background:var(--bg);}
+.pill input:checked + span{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);}
+.pill input:focus-visible + span{outline:2px solid var(--focus);outline-offset:2px;}
+.err{font-size:.86rem;color:var(--danger);margin:0;}
+.done{border:1px solid var(--ok);color:var(--ok);border-radius:10px;padding:14px 16px;margin:0;}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px;}
+.heart{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:.84rem;padding:6px 13px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--text-soft);cursor:pointer;font-variant-numeric:tabular-nums;}
+.heart[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);}
+.heart svg{width:14px;height:14px;}
+
+/* 페이지 머리 */
+.page-head{padding-block:48px 28px;display:flex;flex-direction:column;gap:12px;}
+.page-head h1{font-size:clamp(1.7rem,4.5vw,2.3rem);font-weight:700;}
+.page-head p{margin:0;color:var(--text-soft);max-width:36em;}
+main{padding-bottom:72px;}
+
+/* 바닥글 */
+.site-footer{border-top:1px solid var(--line);padding-block:32px 48px;font-size:.84rem;color:var(--text-faint);}
+.foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.foot .links{display:flex;gap:14px;flex-wrap:wrap;}
+.foot a{color:var(--text-soft);text-underline-offset:3px;}
+.care{margin:14px 0 0;color:var(--text-soft);}

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Death Cafe 데스카페 | 웰다잉과 죽음을 이야기하는 곳</title>
+<meta name="description" content="죽음을 생각하면, 사람의 마음은 착해집니다. 웰다잉과 죽음학 자료를 읽고 생각을 나누는 곳, 차준택(Spirit Care)의 데스카페입니다.">
+<meta property="og:title" content="Death Cafe 데스카페">
+<meta property="og:description" content="웰다잉과 죽음에 대해 읽고, 생각하고, 이야기를 나누는 곳">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .hero{padding-block:clamp(56px,10vw,104px) clamp(48px,8vw,80px);}
+  .hero .kicker{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:1.15rem;color:var(--accent);margin:0 0 18px;}
+  .hero h1{font-size:clamp(2rem,6vw,3.4rem);font-weight:600;line-height:1.3;letter-spacing:-.01em;}
+  .hero p.sub{margin:22px 0 0;color:var(--text-soft);font-size:1.05rem;max-width:32em;}
+  .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px;}
+  section.blk{padding-block:56px;border-top:1px solid var(--line);}
+  .head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:24px;}
+  .head h2{font-size:1.35rem;}
+  .head a{font-size:.88rem;color:var(--accent);text-underline-offset:3px;}
+  .voices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
+  @media (max-width:760px){.voices{grid-template-columns:1fr;}}
+  .voice{margin:0;display:flex;flex-direction:column;gap:12px;padding-top:16px;border-top:2px solid var(--accent);}
+  .voice blockquote{margin:0;font-family:'Noto Serif KR',serif;font-size:1rem;line-height:1.85;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;}
+  .voice figcaption{font-size:.82rem;color:var(--text-faint);}
+  .fields{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);}
+  @media (max-width:760px){.fields{grid-template-columns:repeat(2,minmax(0,1fr));}}
+  .fld{padding:18px 16px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:6px;text-decoration:none;}
+  .fld:last-child{border-right:0;}
+  @media (max-width:760px){.fld:nth-child(2){border-right:0;}.fld:nth-child(-n+2){border-bottom:1px solid var(--line);}}
+  .fld:hover{background:var(--accent-soft);}
+  .fld .n{font-size:.72rem;font-weight:700;color:var(--accent);letter-spacing:.06em;font-variant-numeric:tabular-nums;}
+  .fld .t{font-family:'Noto Serif KR',serif;font-weight:600;font-size:1.02rem;}
+  .fld .latest{font-size:.84rem;color:var(--text-soft);margin-top:auto;padding-top:10px;border-top:1px dashed var(--line);}
+  .fld .latest span{display:block;font-size:.72rem;color:var(--text-faint);}
+  .me{display:grid;grid-template-columns:160px minmax(0,1fr);gap:28px;align-items:center;}
+  @media (max-width:560px){.me{grid-template-columns:1fr;}}
+  .me img{width:160px;aspect-ratio:4/5;object-fit:cover;object-position:center 20%;border-radius:6px;}
+  .me h3{font-size:1.3rem;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;}
+  .me h3 small{font-family:'Noto Sans KR',sans-serif;font-size:.82rem;font-weight:500;color:var(--text-faint);}
+  .me ul{list-style:none;margin:10px 0 14px;padding:0;display:flex;gap:6px;flex-wrap:wrap;}
+  .me li{font-size:.8rem;padding:3px 10px;border:1px solid var(--line);border-radius:999px;color:var(--text-soft);}
+  .me p{margin:0 0 12px;color:var(--text-soft);max-width:34em;}
+  .me a.more{color:var(--accent);font-size:.9rem;text-underline-offset:3px;}
+  .band{background:var(--band);color:var(--band-text);border-radius:12px;padding:28px;display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;}
+  .band h2{font-size:1.25rem;color:var(--band-text);}
+  .band p{margin:6px 0 0;color:var(--band-soft);font-size:.92rem;}
+  .band .btn{background:var(--band-accent);color:#1a1308;}
+  .empty{color:var(--text-faint);}
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+<main>
+  <section class="hero wrap">
+    <p class="kicker">Memento mori · Amor fati · Carpe diem</p>
+    <h1>죽음을 생각하면,<br>사람의 마음은 착해집니다.</h1>
+    <p class="sub">카페에 들르듯 편하게 오세요. 웰다잉과 죽음에 대해 읽고, 생각하고, 이야기를 나누는 곳입니다.</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="library.html">자료실 둘러보기</a>
+      <a class="btn btn-ghost" href="thoughts.html">내 생각 남기기</a>
+    </div>
+  </section>
+
+  <section class="blk wrap" aria-labelledby="h-voices">
+    <div class="head"><h2 id="h-voices">최근에 나눠주신 생각</h2><a href="thoughts.html">생각 나누기 전체 보기 →</a></div>
+    <div class="voices" id="voices"><p class="empty">불러오는 중입니다.</p></div>
+  </section>
+
+  <section class="blk wrap" aria-labelledby="h-lib">
+    <div class="head"><h2 id="h-lib">자료실</h2><a href="library.html">전체 자료 보기 →</a></div>
+    <div class="fields" id="fields"></div>
+  </section>
+
+  <section class="blk wrap" aria-labelledby="h-me">
+    <div class="me">
+      <img src="assets/profile.jpg" alt="차준택 프로필 사진" width="160" height="200">
+      <div>
+        <h3 id="h-me">차준택 <small>Spirit Care</small></h3>
+        <ul><li>국제죽음교육상담전문가</li><li>심리학석사</li><li>임상심리사</li></ul>
+        <p>중학생 때 품은 죽음에 대한 질문을 30년 넘게 붙들고 살아왔습니다. 죽음을 공부하며 오히려 살아갈 힘을 얻었고, 그 이야기를 글과 영상, 강의로 나눕니다.</p>
+        <a class="more" href="about.html">소개 더 보기 →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk wrap" aria-label="강의 안내">
+    <div class="band">
+      <div><h2>기관·단체를 찾아가는 웰다잉 강의</h2><p>사전연명의료의향서 특강부터 죽음학 4회 과정까지, 대상과 일정에 맞춰 준비합니다.</p></div>
+      <a class="btn" href="lecture.html">강의 신청</a>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="assets/site.js"></script>
+<script>
+(function(){
+  DC.chrome("index.html");
+  var esc=DC.esc;
+  DC.api("listPosts").then(function(r){
+    var el=document.getElementById('voices');
+    var list=(r.items||[]).filter(function(p){return p.vis==="public";}).slice(0,3);
+    el.innerHTML=list.length?list.map(function(p){return '<figure class="voice"><blockquote>'+esc(p.body)+'</blockquote><figcaption>'+esc(p.name)+' · '+esc(p.date)+'</figcaption></figure>';}).join('')
+      :'<p class="empty">아직 나눠주신 생각이 없습니다. 첫 이야기를 남겨 주세요.</p>';
+  });
+  DC.api("listLibrary").then(function(r){
+    var items=r.items||[];
+    document.getElementById('fields').innerHTML=DC.FIELDS.map(function(t,i){
+      var latest=items.filter(function(x){return +x.f===i;})[0];
+      return '<a class="fld" href="library.html#f'+(i+1)+'"><span class="n">0'+(i+1)+'</span><span class="t">'+t+'</span>'+
+        (latest?'<span class="latest"><span>최근 자료</span>'+esc(latest.title)+'</span>':'<span class="latest"><span>자료 준비 중</span></span>')+'</a>';
+    }).join('');
+  });
+})();
+</script>
+</body>
+</html>

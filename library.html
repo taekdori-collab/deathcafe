@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>자료실 | Death Cafe 데스카페</title>
+<meta name="description" content="왜 죽음학인가, 죽음과 죽어감, 생애말기와 연명의료, 죽음준비. 네 가지 주제의 웰다잉 강의자료와 글, 영상, 소식을 모았습니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .stack{display:flex;flex-direction:column;gap:28px;}
+  .fields{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);}
+  @media (max-width:640px){.fields{grid-template-columns:repeat(2,minmax(0,1fr));}}
+  .field-btn{font:inherit;text-align:left;background:transparent;border:0;border-right:1px solid var(--line);padding:14px 14px 12px;cursor:pointer;color:var(--text-soft);display:flex;flex-direction:column;gap:2px;}
+  .field-btn:last-child{border-right:0;}
+  @media (max-width:640px){.field-btn:nth-child(2){border-right:0;}.field-btn:nth-child(-n+2){border-bottom:1px solid var(--line);}}
+  .field-btn .n{font-size:.72rem;font-weight:700;color:var(--text-faint);letter-spacing:.06em;}
+  .field-btn .t{font-family:'Noto Serif KR',serif;font-weight:600;font-size:.98rem;color:var(--text);line-height:1.4;}
+  .field-btn .c{font-size:.78rem;color:var(--text-faint);font-variant-numeric:tabular-nums;}
+  .field-btn[aria-pressed="true"]{background:var(--accent-soft);}
+  .field-btn[aria-pressed="true"] .n{color:var(--accent);}
+  .all-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:-14px;}
+  .all-row button.link{font:inherit;font-size:.84rem;background:none;border:0;color:var(--text-soft);cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:0;}
+  .types{display:flex;gap:6px;flex-wrap:wrap;}
+  .chip{font:inherit;font-size:.8rem;padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--text-soft);cursor:pointer;}
+  .chip[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text);}
+  .list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line);}
+  .item{border-bottom:1px solid var(--line);}
+  .item button.open{font:inherit;color:inherit;text-align:left;width:100%;background:none;border:0;cursor:pointer;padding:18px 4px;display:flex;flex-direction:column;gap:6px;}
+  .item button.open:hover .ttl{color:var(--accent);}
+  .meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.8rem;color:var(--text-faint);}
+  .badge{font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:5px;background:var(--surface-2);color:var(--text-soft);}
+  .badge.lec{background:var(--accent-soft);color:var(--accent);}
+  .ttl{font-family:'Noto Serif KR',serif;font-weight:600;font-size:1.06rem;}
+  .sum{font-size:.9rem;color:var(--text-soft);}
+  .stats{font-size:.8rem;color:var(--text-faint);font-variant-numeric:tabular-nums;}
+  .empty{padding:28px 4px;color:var(--text-faint);}
+  .detail{display:flex;flex-direction:column;gap:18px;padding-top:40px;}
+  .back{font:inherit;font-size:.88rem;background:none;border:0;color:var(--text-soft);cursor:pointer;padding:0;width:fit-content;}
+  .detail h1{font-size:clamp(1.4rem,3.5vw,1.9rem);}
+  .body{white-space:pre-wrap;margin:0;}
+  .attach{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;}
+  .attach .fn{font-weight:500;}
+  .links{display:flex;gap:10px;flex-wrap:wrap;}
+  .comments{border-top:1px solid var(--line);padding-top:18px;display:flex;flex-direction:column;gap:14px;}
+  .comments h2{font-size:1rem;}
+  .cmt{display:flex;flex-direction:column;gap:2px;padding-bottom:12px;border-bottom:1px solid var(--line);}
+  .cmt .who{font-size:.84rem;font-weight:700;}
+  .cmt .who span{font-weight:400;color:var(--text-faint);margin-left:8px;}
+  .cmt p{margin:0;font-size:.94rem;white-space:pre-wrap;}
+  .cform{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .cform textarea{grid-column:1 / -1;}
+  .cform .foot{grid-column:1 / -1;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+<main class="wrap narrow">
+  <div id="listView" class="stack">
+    <section class="page-head" style="padding-bottom:0">
+      <span class="eyebrow">자료실</span>
+      <h1>웰다잉 자료실</h1>
+      <p>죽음학의 네 가지 주제에 따라 강의자료, 글, 영상, 최신 소식을 모아 두었습니다. 필요한 자료를 자유롭게 보시고 생각을 남겨 주세요.</p>
+    </section>
+    <div class="fields" id="fields" role="group" aria-label="분야 선택"></div>
+    <div class="all-row">
+      <div class="types" id="types" role="group" aria-label="자료 유형"></div>
+      <button type="button" class="link" id="showAll">전체 분야 보기</button>
+    </div>
+    <ul class="list" id="list"><li class="empty">불러오는 중입니다.</li></ul>
+  </div>
+  <article id="detailView" class="detail" hidden></article>
+</main>
+<div id="site-footer"></div>
+<script src="assets/site.js"></script>
+<script>
+(function(){
+  "use strict";
+  DC.chrome("library.html");
+  var esc=DC.esc, FIELDS=DC.FIELDS, TYPES=["전체","강의자료","글","영상","소식"];
+  var items=[], st={f:null,type:"전체"}, $=function(id){return document.getElementById(id);};
+  var m=/^#f([1-4])$/.exec(location.hash); if(m) st.f=+m[1]-1;
+
+  function renderFields(){
+    $('fields').innerHTML=FIELDS.map(function(t,i){
+      var c=items.filter(function(x){return +x.f===i;}).length;
+      return '<button type="button" class="field-btn" data-f="'+i+'" aria-pressed="'+(st.f===i)+'"><span class="n">0'+(i+1)+'</span><span class="t">'+t+'</span><span class="c">자료 '+c+'</span></button>';
+    }).join('');
+    $('types').innerHTML=TYPES.map(function(t){return '<button type="button" class="chip" data-t="'+t+'" aria-pressed="'+(st.type===t)+'">'+t+'</button>';}).join('');
+    $('showAll').hidden=st.f===null;
+  }
+  function renderList(){
+    var rows=items.filter(function(x){return (st.f===null||+x.f===st.f)&&(st.type==="전체"||x.type===st.type);});
+    $('list').innerHTML=rows.length?rows.map(function(x){
+      return '<li class="item"><button type="button" class="open" data-id="'+x.id+'"><span class="meta"><span class="badge'+(x.type==="강의자료"?" lec":"")+'">'+esc(x.type)+'</span><span>'+FIELDS[+x.f]+'</span><span>'+esc(x.date)+'</span></span><span class="ttl">'+esc(x.title)+'</span><span class="sum">'+esc(x.sum)+'</span><span class="stats">공감 '+x.likes+' · 댓글 '+(x.comments||[]).length+'</span></button></li>';
+    }).join(''):'<li class="empty">이 조건에 맞는 자료가 아직 없습니다.</li>';
+  }
+  function render(){renderFields();renderList();}
+
+  $('fields').addEventListener('click',function(e){var b=e.target.closest('.field-btn');if(!b)return;var f=+b.dataset.f;st.f=(st.f===f)?null:f;render();});
+  $('types').addEventListener('click',function(e){var b=e.target.closest('.chip');if(!b)return;st.type=b.dataset.t;render();});
+  $('showAll').addEventListener('click',function(){st.f=null;render();});
+  $('list').addEventListener('click',function(e){var b=e.target.closest('.open');if(!b)return;openItem(b.dataset.id);});
+
+  function openItem(id){
+    var x=items.filter(function(i){return i.id===id;})[0]; if(!x) return;
+    var liked=DC.isLiked('lib',x.id);
+    var h='<button type="button" class="back" id="back">← 목록으로</button>'
+      +'<div class="meta"><span class="badge'+(x.type==="강의자료"?" lec":"")+'">'+esc(x.type)+'</span><span>'+FIELDS[+x.f]+'</span><span>'+esc(x.date)+'</span></div>'
+      +'<h1>'+esc(x.title)+'</h1><p class="body">'+esc(x.body)+'</p>';
+    if(x.fileName) h+='<div class="attach card"><div class="fn">'+esc(x.fileName)+'</div>'+(x.file?'<a class="btn btn-primary" href="'+esc(x.file)+'" target="_blank" rel="noopener">내려받기</a>':'<span class="stats">파일 준비 중</span>')+'</div>';
+    var links='';
+    if(x.video) links+='<a class="btn btn-primary" href="'+esc(x.video)+'" target="_blank" rel="noopener">영상 보기 ↗</a>';
+    if(x.link) links+='<a class="btn btn-ghost" href="'+esc(x.link)+'" target="_blank" rel="noopener">'+esc(x.linkLabel||'원문 보기')+' ↗</a>';
+    if(links) h+='<div class="links">'+links+'</div>';
+    h+='<button type="button" class="heart" id="like" aria-pressed="'+liked+'" style="width:fit-content">'+DC.HEART+'공감해요 <span>'+x.likes+'</span></button>';
+    var cm=x.comments||[];
+    h+='<section class="comments"><h2>댓글 '+cm.length+'</h2>'
+      +cm.map(function(c){return '<div class="cmt"><span class="who">'+esc(c.name)+'<span>'+esc(c.date)+'</span></span><p>'+esc(c.text)+'</p></div>';}).join('')
+      +'<form class="cform" id="cform" novalidate><input type="text" id="cn" maxlength="20" placeholder="닉네임" aria-label="닉네임"><input type="password" id="cp" maxlength="20" placeholder="비밀번호 (삭제용)" aria-label="비밀번호"><textarea id="ct" maxlength="500" rows="3" placeholder="자료를 보고 느낀 점을 남겨주세요." aria-label="댓글 내용"></textarea><div class="foot"><p class="err" id="cerr" hidden></p><span></span><button type="submit" class="btn btn-primary">댓글 남기기</button></div></form></section>'
+      +'<div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><span>이 주제로 강의를 듣고 싶으신가요?</span><a class="btn btn-ghost btn-small" href="lecture.html">강의 신청</a></div>';
+    var d=$('detailView'); d.innerHTML=h; d.hidden=false; $('listView').hidden=true; window.scrollTo(0,0);
+    $('back').onclick=function(){d.hidden=true;$('listView').hidden=false;render();};
+    $('like').onclick=function(){var on=!DC.isLiked('lib',x.id);DC.setLiked('lib',x.id,on);x.likes=Math.max(0,x.likes+(on?1:-1));this.setAttribute('aria-pressed',on);this.querySelector('span').textContent=x.likes;DC.api("like",{kind:"lib",id:x.id,delta:on?1:-1});};
+    $('cform').onsubmit=function(e){
+      e.preventDefault();var n=$('cn').value.trim(),p=$('cp').value,t=$('ct').value.trim();
+      var pr=!n?'닉네임을 입력해 주세요.':p.length<4?'비밀번호를 4자 이상 입력해 주세요.':!t?'댓글 내용을 입력해 주세요.':'';
+      if(pr){$('cerr').textContent=pr;$('cerr').hidden=false;return;}
+      DC.api("addComment",{id:x.id,name:n,pw:p,text:t}).then(function(r){
+        if(!r.ok){$('cerr').textContent=r.error;$('cerr').hidden=false;return;}
+        x.comments=r.comments;openItem(x.id);
+      });
+    };
+  }
+  DC.api("listLibrary").then(function(r){items=r.items||[];render();});
+})();
+</script>
+</body>
+</html>

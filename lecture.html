@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>강의 신청 | Death Cafe 데스카페</title>
+<meta name="description" content="기관·단체를 찾아가는 웰다잉 강의. 사전연명의료의향서 특강, 웰다잉 강의, 죽음학 4회 과정을 신청하세요.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .stack{display:flex;flex-direction:column;gap:32px;}
+  .topics h2{font-size:1.15rem;margin-bottom:12px;}
+  .topic-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line);}
+  .topic-list li{display:grid;grid-template-columns:1fr auto;gap:4px 16px;padding:16px 0;border-bottom:1px solid var(--line);}
+  .topic-list .name{font-family:'Noto Serif KR',serif;font-weight:600;font-size:1.02rem;}
+  .topic-list .time{font-size:.84rem;color:var(--accent);font-weight:700;white-space:nowrap;}
+  .topic-list .desc{grid-column:1 / -1;font-size:.9rem;color:var(--text-soft);}
+  .topics .foot{font-size:.86rem;color:var(--text-faint);margin:10px 0 0;}
+  form{display:flex;flex-direction:column;gap:16px;}
+  form h2{font-size:1.15rem;}
+  fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:6px;}
+  .consent{background:var(--surface-2);border-radius:10px;padding:14px 16px;font-size:.84rem;color:var(--text-soft);display:flex;flex-direction:column;gap:10px;}
+  .consent dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;}
+  .consent dt{font-weight:700;color:var(--text);}
+  .consent dd{margin:0;}
+  .check{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;color:var(--text);cursor:pointer;}
+  .check input{margin-top:6px;width:16px;height:16px;accent-color:var(--accent);}
+  .submit-row{display:flex;justify-content:flex-end;}
+  .mail{background:var(--band);color:var(--band-text);border-radius:12px;padding:22px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
+  .mail p{margin:0;color:var(--band-soft);font-size:.9rem;}
+  .mail .addr{font-size:1.1rem;font-weight:700;user-select:all;}
+  .mail .copied{font-size:.82rem;color:var(--band-soft);margin-left:8px;}
+  .mail .btn{border-color:var(--band-soft);color:var(--band-text);background:transparent;font-weight:500;padding:8px 16px;font-size:.86rem;}
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+<main class="wrap narrow stack">
+  <section class="page-head" style="padding-bottom:0">
+    <span class="eyebrow">강의 신청</span>
+    <h1>웰다잉 강의를 신청하세요</h1>
+    <p>기관, 단체, 모임 어디든 찾아갑니다. 삶의 마무리를 미리 생각해 보는 일이 두려움이 아니라 오늘을 더 잘 사는 힘이 되도록 함께 이야기합니다.</p>
+  </section>
+
+  <section class="topics" aria-labelledby="tp">
+    <h2 id="tp">이런 주제로 강의합니다</h2>
+    <ul class="topic-list">
+      <li><span class="name">사전연명의료의향서, 나를 위한 첫 준비</span><span class="time">1시간</span><span class="desc">연명의료 결정 제도와 의향서 작성 방법을 실제 사례로 쉽게 풀어드립니다.</span></li>
+      <li><span class="name">웰다잉, 잘 죽는 법이 잘 사는 법</span><span class="time">2시간</span><span class="desc">죽음을 준비한다는 것의 의미, 남은 삶을 돌아보는 질문들을 함께 나눕니다.</span></li>
+      <li><span class="name">죽음학 4회 과정</span><span class="time">2시간 × 4회</span><span class="desc">왜 죽음학인가, 죽음과 죽어감, 생애말기와 연명의료, 죽음준비계획서까지.</span></li>
+    </ul>
+    <p class="foot">시간과 내용은 대상과 일정에 맞춰 조정할 수 있습니다.</p>
+  </section>
+
+  <form class="card" id="form" novalidate>
+    <h2>신청서</h2>
+    <div class="row">
+      <div class="field"><label for="org">기관·단체명<span class="req">*</span></label><input type="text" id="org" maxlength="50" placeholder="예: ○○구 노인복지관"></div>
+      <div class="field"><label for="who">담당자 성함<span class="req">*</span></label><input type="text" id="who" maxlength="20"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label for="tel">연락처<span class="req">*</span></label><input type="tel" id="tel" maxlength="20" placeholder="010-0000-0000"></div>
+      <div class="field"><label for="email">이메일</label><input type="email" id="email" maxlength="60"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label for="topic">희망 주제</label>
+        <select id="topic">
+          <option>사전연명의료의향서, 나를 위한 첫 준비 (1시간)</option>
+          <option>웰다잉, 잘 죽는 법이 잘 사는 법 (2시간)</option>
+          <option>죽음학 4회 과정 (2시간 × 4회)</option>
+          <option>협의하고 싶어요</option>
+        </select>
+      </div>
+      <div class="field"><label for="when">희망 일정</label><input type="text" id="when" maxlength="50" placeholder="예: 11월 중 평일 오후"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label for="aud">대상과 인원</label><input type="text" id="aud" maxlength="50" placeholder="예: 60대 이상 어르신 30명"></div>
+      <fieldset>
+        <legend class="legend">강의 방식</legend>
+        <div class="pills">
+          <label class="pill"><input type="radio" name="mode" id="m1" value="대면" checked><span>대면</span></label>
+          <label class="pill"><input type="radio" name="mode" id="m2" value="온라인"><span>온라인</span></label>
+          <label class="pill"><input type="radio" name="mode" id="m3" value="협의"><span>협의</span></label>
+        </div>
+      </fieldset>
+    </div>
+    <div class="field"><label for="note">요청 사항</label><textarea id="note" maxlength="1000" rows="4" placeholder="강의 목적, 참석자 특성, 궁금한 점 등을 자유롭게 적어주세요."></textarea></div>
+    <div class="consent">
+      <strong style="color:var(--text)">개인정보 수집·이용 안내</strong>
+      <dl>
+        <dt>수집 항목</dt><dd>기관·단체명, 담당자 성함, 연락처, 이메일</dd>
+        <dt>이용 목적</dt><dd>강의 신청 확인 및 일정 협의 연락</dd>
+        <dt>보관 기간</dt><dd>신청일로부터 1년 후 파기</dd>
+      </dl>
+      <span>동의하지 않으실 수 있으나, 이 경우 신청서로는 접수가 어렵습니다. 아래 이메일로 문의해 주세요.</span>
+      <label class="check"><input type="checkbox" id="agree"><span>개인정보 수집·이용에 동의합니다.<span class="req">*</span></span></label>
+    </div>
+    <p class="err" id="err" hidden></p>
+    <p class="done" id="done" hidden></p>
+    <div class="submit-row"><button type="submit" class="btn btn-primary" id="submitBtn">신청하기</button></div>
+  </form>
+
+  <section class="mail" aria-label="이메일 문의">
+    <div><p>신청서 대신 이메일로 문의하셔도 됩니다.</p><span class="addr" id="addr"></span><span class="copied" id="copied" aria-live="polite"></span></div>
+    <button type="button" class="btn" id="copy">주소 복사</button>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="assets/site.js"></script>
+<script>
+(function(){
+  "use strict";
+  DC.chrome("lecture.html");
+  document.getElementById('addr').textContent=DC.CONFIG.EMAIL;
+  var form=document.getElementById('form'),err=document.getElementById('err'),done=document.getElementById('done'),btn=document.getElementById('submitBtn');
+  function v(id){return document.getElementById(id).value.trim();}
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var pr=!v('org')?'기관·단체명을 입력해 주세요.':!v('who')?'담당자 성함을 입력해 주세요.':!v('tel')?'연락처를 입력해 주세요.':!document.getElementById('agree').checked?'개인정보 수집·이용에 동의해 주세요.':'';
+    if(pr){err.textContent=pr;err.hidden=false;done.hidden=true;return;}
+    err.hidden=true;btn.disabled=true;btn.textContent='보내는 중…';
+    var data={org:v('org'),who:v('who'),tel:v('tel'),email:v('email'),topic:v('topic'),when:v('when'),aud:v('aud'),mode:document.querySelector('input[name="mode"]:checked').value,note:v('note')};
+    DC.api("lecture",data).then(function(r){
+      btn.disabled=false;btn.textContent='신청하기';
+      if(!r.ok){err.textContent=r.error;err.hidden=false;return;}
+      done.textContent=data.org+' '+data.who+' 님, 신청해 주셔서 감사합니다. 확인 후 2~3일 안에 연락드리겠습니다.'+(DC.CONFIG.API_URL?'':' (시범 운영 중이라 실제로 접수되지는 않았습니다. 급하시면 이메일로 연락해 주세요.)');
+      done.hidden=false;form.reset();
+    });
+  });
+  var copied=document.getElementById('copied');
+  document.getElementById('copy').addEventListener('click',function(){
+    function fb(){var r=document.createRange();r.selectNodeContents(document.getElementById('addr'));var s=getSelection();s.removeAllRanges();s.addRange(r);copied.textContent='선택되었습니다. 복사해 주세요.';}
+    try{navigator.clipboard.writeText(DC.CONFIG.EMAIL).then(function(){copied.textContent='복사되었습니다.';},fb);}catch(x){fb();}
+  });
+})();
+</script>
+</body>
+</html>

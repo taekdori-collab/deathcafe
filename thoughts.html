@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>생각 나누기 | Death Cafe 데스카페</title>
+<meta name="description" content="웰다잉과 아름다운 삶의 마무리에 대한 당신의 경험과 생각을 남겨주세요.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .stack{display:flex;flex-direction:column;gap:28px;}
+  .lead{font-family:'Noto Serif KR',serif;font-size:1.12rem;color:var(--text);margin:0;max-width:34em;}
+  .invite{border-left:2px solid var(--accent);padding:4px 0 4px 18px;display:flex;flex-direction:column;gap:6px;}
+  .invite strong{font-size:.9rem;color:var(--text-soft);font-weight:500;}
+  .invite ul{margin:0;padding-left:1.1em;color:var(--text-soft);font-size:.95rem;}
+  .closing{margin:0;color:var(--text-soft);font-size:.95rem;}
+  .write{display:flex;flex-direction:column;gap:14px;}
+  .write h2{font-size:1.1rem;}
+  .count{font-size:.78rem;color:var(--text-faint);text-align:right;font-variant-numeric:tabular-nums;}
+  fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:6px;}
+  .vis-help{font-size:.82rem;color:var(--text-faint);margin:0;}
+  .form-foot{display:flex;justify-content:flex-end;}
+  .notice{background:var(--band);color:var(--band-soft);border-radius:10px;padding:16px 18px;font-size:.84rem;}
+  .notice ul{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:4px;}
+  .notice .care{color:var(--band-text);}
+  .list-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;}
+  .list-head h2{font-size:1.2rem;}
+  .list-head span{font-size:.85rem;color:var(--text-faint);font-variant-numeric:tabular-nums;}
+  .post{padding:20px 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px;}
+  .post:last-child{border-bottom:1px solid var(--line);}
+  .meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82rem;color:var(--text-faint);}
+  .meta .name{font-weight:700;color:var(--text);font-size:.92rem;}
+  .tag{font-size:.72rem;padding:2px 8px;border-radius:5px;background:var(--accent-soft);color:var(--accent);}
+  .body{margin:0;white-space:pre-wrap;font-family:'Noto Serif KR',serif;line-height:1.85;}
+  .locked{margin:0;color:var(--text-faint);font-size:.92rem;}
+  .actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .spacer{flex:1;}
+  .pw-box{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .pw-box input{max-width:180px;padding:7px 11px;font-size:.88rem;}
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+<main class="wrap narrow stack">
+  <section class="page-head" style="padding-bottom:0">
+    <span class="eyebrow">생각 나누기</span>
+    <h1>웰다잉과 죽음준비에 대한 나의 생각</h1>
+    <p class="lead">웰다잉과 아름다운 삶의 마무리에 대한 당신의 경험과 생각을 남겨주세요.</p>
+    <div class="invite">
+      <strong>이런 이야기를 기다립니다</strong>
+      <ul>
+        <li>먼저 떠나보낸 사람과의 기억, 그때 미처 하지 못한 말</li>
+        <li>내 삶의 마지막을 어떻게 맞이하고 싶은지에 대한 생각</li>
+        <li>지금 살아 있음에 감사한 순간</li>
+        <li>사랑하는 사람에게 미리 남겨두고 싶은 한 마디</li>
+        <li>강의나 글, 영상을 보고 새로 떠오른 생각</li>
+      </ul>
+    </div>
+    <p class="closing">짧은 한 문장도 좋습니다. 당신의 이야기가 누군가에게는 오늘을 더 잘 살아갈 힘이 됩니다.</p>
+  </section>
+
+  <form class="write card" id="form" novalidate>
+    <h2>글 남기기</h2>
+    <div class="row">
+      <div class="field"><label for="nick">닉네임</label><input type="text" id="nick" maxlength="20" placeholder="닉네임 (실명도 가능)" autocomplete="off"></div>
+      <div class="field"><label for="pw">비밀번호</label><input type="password" id="pw" maxlength="20" placeholder="4자 이상" autocomplete="new-password"></div>
+    </div>
+    <div class="field"><label for="msg">내용</label><textarea id="msg" maxlength="1000" rows="6" placeholder="떠오르는 생각을 편하게 적어주세요."></textarea><span class="count" id="count">0 / 1000</span></div>
+    <fieldset>
+      <legend class="legend">공개 설정</legend>
+      <div class="pills">
+        <label class="pill"><input type="radio" name="vis" id="vis-public" value="public" checked><span>모두에게 공개</span></label>
+        <label class="pill"><input type="radio" name="vis" id="vis-private" value="private"><span>나만 보기</span></label>
+      </div>
+    </fieldset>
+    <p class="vis-help" id="visHelp">모든 방문자가 읽고 공감할 수 있습니다.</p>
+    <p class="err" id="err" hidden></p>
+    <div class="form-foot"><button type="submit" class="btn btn-primary" id="submitBtn">글 남기기</button></div>
+  </form>
+
+  <aside class="notice" aria-label="안내">
+    <ul>
+      <li>연락처, 주소 등 개인정보는 적지 말아 주세요. 실명을 쓰시면 모든 방문자에게 공개됩니다.</li>
+      <li>"나만 보기" 글은 다른 방문자에게 보이지 않으며, 운영자만 확인할 수 있습니다.</li>
+      <li>비밀번호는 글 삭제와 나만 보기 글 열람에 필요하며, 잊으시면 찾을 수 없습니다.</li>
+      <li>서로를 아프게 하는 글은 예고 없이 삭제될 수 있습니다.</li>
+      <li class="care">지금 마음이 많이 힘드시다면 혼자 견디지 마세요. 자살예방 상담전화 109(24시간)에서 이야기를 들어드립니다.</li>
+    </ul>
+  </aside>
+
+  <section aria-labelledby="lt">
+    <div class="list-head"><h2 id="lt">나눠주신 생각들</h2><span id="total"></span></div>
+    <div id="posts" style="margin-top:12px"><p class="locked">불러오는 중입니다.</p></div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="assets/site.js"></script>
+<script>
+(function(){
+  "use strict";
+  DC.chrome("thoughts.html");
+  var esc=DC.esc, posts=[], ui={}, list=document.getElementById('posts');
+
+  function render(){
+    document.getElementById('total').textContent='글 '+posts.length+'개';
+    list.innerHTML=posts.length?posts.map(function(p){
+      var s=ui[p.id]||{}, priv=p.vis==="private", open=!priv||s.body;
+      var content=open?'<p class="body">'+esc(s.body||p.body)+'</p>':'<p class="locked">작성자만 볼 수 있는 글입니다.</p>';
+      var acts='';
+      if(!priv){var on=DC.isLiked('post',p.id);acts+='<button type="button" class="heart" data-like="'+p.id+'" aria-pressed="'+on+'">'+DC.HEART+'공감해요 <span>'+p.likes+'</span></button>';}
+      acts+='<span class="spacer"></span>';
+      if(s.mode){
+        acts+='<span class="pw-box"><input type="password" id="pw-'+p.id+'" placeholder="비밀번호" aria-label="비밀번호"><button type="button" class="btn btn-small '+(s.mode==='delete'?'btn-danger':'btn-ghost')+'" data-confirm="'+p.id+'">'+(s.mode==='delete'?'삭제':'열기')+'</button><button type="button" class="btn btn-small btn-ghost" data-cancel="'+p.id+'">취소</button></span>';
+      }else{
+        if(priv&&!s.body) acts+='<button type="button" class="btn btn-small btn-ghost" data-open="'+p.id+'">비밀번호로 열기</button>';
+        acts+='<button type="button" class="btn btn-small btn-ghost" data-del="'+p.id+'">삭제</button>';
+      }
+      return '<article class="post"><div class="meta"><span class="name">'+esc(p.name)+'</span><span>'+esc(p.date)+'</span>'+(priv?'<span class="tag">나만 보기</span>':'')+'</div>'+content+'<div class="actions">'+acts+'</div>'+(s.err?'<p class="err">'+esc(s.err)+'</p>':'')+'</article>';
+    }).join(''):'<p class="locked">아직 남겨진 글이 없습니다. 첫 이야기를 남겨 주세요.</p>';
+  }
+  function load(){DC.api("listPosts").then(function(r){posts=r.items||[];render();});}
+  function st(id){return ui[id]||(ui[id]={});}
+  function find(id){return posts.filter(function(p){return p.id===id;})[0];}
+
+  list.addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return; var d=b.dataset, id, s;
+    if(d.like){id=d.like;var on=!DC.isLiked('post',id);DC.setLiked('post',id,on);var p=find(id);p.likes=Math.max(0,p.likes+(on?1:-1));render();DC.api("like",{kind:"post",id:id,delta:on?1:-1});return;}
+    if(d.open||d.del){id=d.open||d.del;s=st(id);s.mode=d.open?'open':'delete';s.err='';render();var i=document.getElementById('pw-'+id);if(i)i.focus();return;}
+    if(d.cancel){s=st(d.cancel);s.mode=null;s.err='';render();return;}
+    if(d.confirm){
+      id=d.confirm;s=st(id);var pw=document.getElementById('pw-'+id).value;
+      DC.api(s.mode==='open'?"unlockPost":"deletePost",{id:id,pw:pw}).then(function(r){
+        if(!r.ok){s.err=r.error||'비밀번호가 맞지 않습니다.';render();return;}
+        if(s.mode==='open'){s.body=r.body;s.mode=null;s.err='';render();}
+        else{posts=posts.filter(function(p){return p.id!==id;});delete ui[id];render();}
+      });
+    }
+  });
+
+  var msg=document.getElementById('msg'),count=document.getElementById('count'),help=document.getElementById('visHelp');
+  msg.addEventListener('input',function(){count.textContent=msg.value.length+' / 1000';});
+  document.querySelectorAll('input[name="vis"]').forEach(function(r){r.addEventListener('change',function(){
+    help.textContent=r.value==='private'?'다른 방문자에게는 보이지 않습니다. 운영자는 확인할 수 있습니다.':'모든 방문자가 읽고 공감할 수 있습니다.';});});
+
+  document.getElementById('form').addEventListener('submit',function(e){
+    e.preventDefault();
+    var f=e.target,err=document.getElementById('err'),btn=document.getElementById('submitBtn');
+    var name=document.getElementById('nick').value.trim(),pw=document.getElementById('pw').value,body=msg.value.trim(),vis=document.querySelector('input[name="vis"]:checked').value;
+    var pr=!name?'닉네임을 입력해 주세요.':pw.length<4?'비밀번호를 4자 이상 입력해 주세요.':!body?'내용을 입력해 주세요.':'';
+    if(pr){err.textContent=pr;err.hidden=false;return;}
+    err.hidden=true;btn.disabled=true;btn.textContent='올리는 중…';
+    DC.api("addPost",{name:name,pw:pw,body:body,vis:vis}).then(function(r){
+      btn.disabled=false;btn.textContent='글 남기기';
+      if(!r.ok){err.textContent=r.error;err.hidden=false;return;}
+      if(vis==='private') st(r.item.id).body=body;
+      posts.unshift(r.item);f.reset();count.textContent='0 / 1000';help.textContent='모든 방문자가 읽고 공감할 수 있습니다.';render();
+      list.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  });
+  load();
+})();
+</script>
+</body>
+</html>
