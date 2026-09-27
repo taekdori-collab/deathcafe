@@ -5,7 +5,7 @@
 var DC = (function(){
   "use strict";
   var CONFIG = {
-    API_URL: "",
+    API_URL: "https://script.google.com/macros/s/AKfycbwiy7sHsNyb04euHdOEkIgh1njshACJ3gBec9FS9ulEDRzSLIdl62Rmdp7pWh2Gbh-T/exec",
     EMAIL: "emilcha2@naver.com",
     BRUNCH: "https://brunch.co.kr/@ujuboygpqn",
     YOUTUBE: "https://www.youtube.com/@spiritcare139"
