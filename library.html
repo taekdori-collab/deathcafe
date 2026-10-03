@@ -113,7 +113,7 @@
       +'<div class="meta"><span class="badge'+(x.type==="강의자료"?" lec":"")+'">'+esc(x.type)+'</span><span>'+FIELDS[+x.f]+'</span><span>'+esc(x.date)+'</span></div>'
       +'<h1>'+esc(x.title)+'</h1>';
     var isImg=x.file&&/\.(png|jpe?g|gif|webp)(\?|$)/i.test(x.file);
-    if(isImg) h+='<figure class="slide"><img src="'+esc(x.file)+'" alt="'+esc(x.title)+'" loading="lazy"></figure>';
+    if(isImg) h+='<figure class="slide"><img src="'+esc(x.file)+'" alt="'+esc(x.title)+'"></figure>';
     if(x.body) h+='<p class="body">'+esc(x.body)+'</p>';
     if(x.fileName&&!isImg) h+='<div class="attach card"><div class="fn">'+esc(x.fileName)+'</div>'+(x.file?'<a class="btn btn-primary" href="'+esc(x.file)+'" target="_blank" rel="noopener">내려받기</a>':'<span class="stats">파일 준비 중</span>')+'</div>';
     var links='';
