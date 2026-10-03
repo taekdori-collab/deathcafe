@@ -41,6 +41,8 @@
   .back{font:inherit;font-size:.88rem;background:none;border:0;color:var(--text-soft);cursor:pointer;padding:0;width:fit-content;}
   .detail h1{font-size:clamp(1.4rem,3.5vw,1.9rem);}
   .body{white-space:pre-wrap;margin:0;}
+  .slide{margin:0;}
+  .slide img{display:block;width:100%;height:auto;border-radius:12px;border:1px solid var(--line);}
   .attach{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;}
   .attach .fn{font-weight:500;}
   .links{display:flex;gap:10px;flex-wrap:wrap;}
@@ -109,8 +111,11 @@
     var liked=DC.isLiked('lib',x.id);
     var h='<button type="button" class="back" id="back">← 목록으로</button>'
       +'<div class="meta"><span class="badge'+(x.type==="강의자료"?" lec":"")+'">'+esc(x.type)+'</span><span>'+FIELDS[+x.f]+'</span><span>'+esc(x.date)+'</span></div>'
-      +'<h1>'+esc(x.title)+'</h1><p class="body">'+esc(x.body)+'</p>';
-    if(x.fileName) h+='<div class="attach card"><div class="fn">'+esc(x.fileName)+'</div>'+(x.file?'<a class="btn btn-primary" href="'+esc(x.file)+'" target="_blank" rel="noopener">내려받기</a>':'<span class="stats">파일 준비 중</span>')+'</div>';
+      +'<h1>'+esc(x.title)+'</h1>';
+    var isImg=x.file&&/\.(png|jpe?g|gif|webp)(\?|$)/i.test(x.file);
+    if(isImg) h+='<figure class="slide"><img src="'+esc(x.file)+'" alt="'+esc(x.title)+'" loading="lazy"></figure>';
+    if(x.body) h+='<p class="body">'+esc(x.body)+'</p>';
+    if(x.fileName&&!isImg) h+='<div class="attach card"><div class="fn">'+esc(x.fileName)+'</div>'+(x.file?'<a class="btn btn-primary" href="'+esc(x.file)+'" target="_blank" rel="noopener">내려받기</a>':'<span class="stats">파일 준비 중</span>')+'</div>';
     var links='';
     if(x.video) links+='<a class="btn btn-primary" href="'+esc(x.video)+'" target="_blank" rel="noopener">영상 보기 ↗</a>';
     if(x.link) links+='<a class="btn btn-ghost" href="'+esc(x.link)+'" target="_blank" rel="noopener">'+esc(x.linkLabel||'원문 보기')+' ↗</a>';
