@@ -57,6 +57,24 @@
   .cform{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
   .cform textarea{grid-column:1 / -1;}
   .cform .foot{grid-column:1 / -1;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+  /* 탭: 주제별 자료 | 웰다잉 뉴스 */
+  .tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:-6px;}
+  .tab{font:inherit;font-size:.95rem;font-weight:500;background:none;border:0;border-bottom:2px solid transparent;padding:10px 14px;margin-bottom:-1px;color:var(--text-soft);cursor:pointer;}
+  .tab[aria-selected="true"]{color:var(--text);border-bottom-color:var(--accent);font-weight:700;}
+  .news-intro{font-size:.92rem;color:var(--text-soft);margin:0;}
+  .issue-no{font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:5px;background:var(--accent-soft);color:var(--accent);}
+  .draft-bar{background:var(--surface-2);border:1px dashed var(--accent);border-radius:10px;padding:12px 16px;font-size:.88rem;color:var(--text-soft);}
+  .lead{font-size:1rem;line-height:1.85;margin:0;color:var(--text);}
+  .news-items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;counter-reset:nw;}
+  .news-item{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:10px;}
+  .news-item h2{font-size:1.08rem;line-height:1.5;margin:0;}
+  .news-item h2::before{counter-increment:nw;content:counter(nw) ". ";color:var(--accent);}
+  .news-item .sm{margin:0;line-height:1.8;font-size:.95rem;}
+  .src{font-size:.82rem;color:var(--text-faint);}
+  .src a{color:var(--text-soft);}
+  .view{border-left:3px solid var(--accent);padding:4px 0 4px 12px;font-size:.93rem;line-height:1.75;}
+  .view b{display:block;font-size:.76rem;letter-spacing:.06em;color:var(--accent);margin-bottom:2px;}
+  .note{font-size:.82rem;color:var(--text-faint);margin:0;}
 </style>
 </head>
 <body>
@@ -68,12 +86,22 @@
       <h1>웰다잉 자료실</h1>
       <p>죽음학의 네 가지 주제에 따라 강의자료, 글, 영상, 최신 소식을 모아 두었습니다. 필요한 자료를 자유롭게 보시고 생각을 남겨 주세요.</p>
     </section>
-    <div class="fields" id="fields" role="group" aria-label="분야 선택"></div>
-    <div class="all-row">
-      <div class="types" id="types" role="group" aria-label="자료 유형"></div>
-      <button type="button" class="link" id="showAll">전체 분야 보기</button>
+    <div class="tabs" role="tablist" aria-label="자료실 구분">
+      <button type="button" class="tab" role="tab" id="tabLib" aria-selected="true">주제별 자료</button>
+      <button type="button" class="tab" role="tab" id="tabNews" aria-selected="false">웰다잉 뉴스</button>
     </div>
-    <ul class="list" id="list"><li class="empty">불러오는 중입니다.</li></ul>
+    <div id="libPane" class="stack">
+      <div class="fields" id="fields" role="group" aria-label="분야 선택"></div>
+      <div class="all-row">
+        <div class="types" id="types" role="group" aria-label="자료 유형"></div>
+        <button type="button" class="link" id="showAll">전체 분야 보기</button>
+      </div>
+      <ul class="list" id="list"><li class="empty">불러오는 중입니다.</li></ul>
+    </div>
+    <div id="newsPane" class="stack" hidden>
+      <p class="news-intro">한 주 동안의 웰다잉·연명의료·호스피스·죽음준비 관련 소식 가운데 함께 생각해 볼 만한 다섯 가지를 골라, 요약과 함께 강사의 시선을 덧붙였습니다. 매주 주말에 새 호가 올라옵니다.</p>
+      <ul class="list" id="newsList"><li class="empty">불러오는 중입니다.</li></ul>
+    </div>
   </div>
   <article id="detailView" class="detail" hidden></article>
 </main>
@@ -142,6 +170,67 @@
     };
   }
   DC.api("listLibrary").then(function(r){items=r.items||[];render();});
+
+  /* ---------- 웰다잉 뉴스 (저장소 news/ 폴더의 JSON을 읽음) ---------- */
+  var issues=null;
+  function nocache(u){return u+'?v='+Date.now();}
+  function getJSON(u){return fetch(nocache(u)).then(function(r){if(!r.ok)throw 0;return r.json();});}
+  function setTab(t){
+    var news=t==="news";
+    $('tabLib').setAttribute('aria-selected',!news); $('tabNews').setAttribute('aria-selected',news);
+    $('libPane').hidden=news; $('newsPane').hidden=!news;
+    if(news) loadIssues();
+  }
+  $('tabLib').onclick=function(){history.replaceState(null,'',location.pathname);setTab("lib");};
+  $('tabNews').onclick=function(){history.replaceState(null,'',location.pathname+'#news');setTab("news");};
+
+  function loadIssues(){
+    if(issues){renderIssues();return Promise.resolve();}
+    return getJSON('news/index.json').then(function(d){issues=d.issues||[];renderIssues();})
+      .catch(function(){issues=[];renderIssues();});
+  }
+  function renderIssues(){
+    $('newsList').innerHTML=issues.length?issues.map(function(x){
+      return '<li class="item"><button type="button" class="open" data-issue="'+esc(x.id)+'"><span class="meta"><span class="issue-no">제'+esc(x.no)+'호</span><span>'+esc(x.range)+'</span></span><span class="ttl">'+esc(x.title)+'</span><span class="sum">'+esc(x.sum)+'</span></button></li>';
+    }).join(''):'<li class="empty">첫 호를 준비하고 있습니다.</li>';
+  }
+  $('newsList').addEventListener('click',function(e){var b=e.target.closest('.open');if(!b)return;location.hash='news-'+b.dataset.issue;});
+
+  function openIssue(id,draft){
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(id)) return;
+    getJSON('news/'+(draft?'drafts/':'')+id+'.json').then(function(x){
+      var h='<button type="button" class="back" id="back">← 웰다잉 뉴스 목록</button>';
+      if(draft) h+='<div class="draft-bar"><b>검토용 초안입니다.</b> 아직 자료실에 게시되지 않았고, 메뉴에서도 보이지 않습니다.</div>';
+      h+='<div class="meta"><span class="issue-no">제'+esc(x.no)+'호</span><span>'+esc(x.range)+'</span><span>웰다잉 뉴스</span></div>'
+        +'<h1>'+esc(x.title)+'</h1>';
+      if(x.lead) h+='<p class="lead">'+esc(x.lead)+'</p>';
+      h+='<ol class="news-items">'+(x.items||[]).map(function(n){
+        return '<li class="news-item"><div class="meta">'+(n.f!=null&&FIELDS[+n.f]?'<span class="badge lec">'+FIELDS[+n.f]+'</span>':'')+'</div>'
+          +'<h2>'+esc(n.headline)+'</h2><p class="sm">'+esc(n.summary)+'</p>'
+          +'<div class="src">출처: '+esc(n.source)+(n.sourceDate?' · '+esc(n.sourceDate):'')+(n.url?' · <a href="'+esc(n.url)+'" target="_blank" rel="noopener">원문 보기 ↗</a>':'')+'</div>'
+          +(n.comment?'<div class="view"><b>차준택의 시선</b>'+esc(n.comment)+'</div>':'')+'</li>';
+      }).join('')+'</ol>';
+      h+='<p class="note">기사 요약은 원문을 바탕으로 데스카페가 다시 쓴 것입니다. 정확한 내용은 원문을 확인해 주세요.</p>';
+      if(x.care) h+='<p class="note">마음이 많이 힘드시다면 혼자 견디지 마세요. 자살예방 상담전화 109 (24시간)</p>';
+      h+='<div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><span>이번 주 소식을 보고 떠오른 생각이 있으신가요?</span><a class="btn btn-ghost btn-small" href="thoughts.html">생각 나누기에 남기기</a></div>';
+      var d=$('detailView'); d.innerHTML=h; d.hidden=false; $('listView').hidden=true; window.scrollTo(0,0);
+      document.title=x.title+' | Death Cafe 데스카페';
+      $('back').onclick=function(){location.hash='news';};
+    }).catch(function(){
+      var d=$('detailView'); d.innerHTML='<button type="button" class="back" id="back">← 웰다잉 뉴스 목록</button><p class="empty">해당 호를 찾을 수 없습니다.</p>'; d.hidden=false; $('listView').hidden=true;
+      $('back').onclick=function(){location.hash='news';};
+    });
+  }
+
+  function route(){
+    var h=location.hash, mm;
+    if((mm=/^#news-(\d{4}-\d{2}-\d{2})$/.exec(h))){setTab("news");openIssue(mm[1],false);return;}
+    if((mm=/^#draft-(\d{4}-\d{2}-\d{2})$/.exec(h))){openIssue(mm[1],true);return;}
+    $('detailView').hidden=true; $('listView').hidden=false; document.title='자료실 | Death Cafe 데스카페';
+    setTab(h==="#news"?"news":"lib");
+  }
+  window.addEventListener('hashchange',route);
+  route();
 })();
 </script>
 </body>
