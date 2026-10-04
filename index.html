@@ -50,6 +50,19 @@
   .band p{margin:6px 0 0;color:var(--band-soft);font-size:.92rem;}
   .band .btn{background:var(--band-accent);color:#1a1308;}
   .empty{color:var(--text-faint);}
+  /* 이번 주 웰다잉 뉴스 */
+  .news{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;padding:24px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px;}
+  @media (max-width:760px){.news{grid-template-columns:1fr;gap:18px;padding:20px;}}
+  .news .meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.8rem;color:var(--text-faint);margin-bottom:10px;}
+  .news .no{font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:5px;background:var(--accent-soft);color:var(--accent);}
+  .news .new{font-size:.68rem;font-weight:700;letter-spacing:.06em;color:var(--accent-ink);background:var(--accent);padding:2px 7px;border-radius:5px;}
+  .news h3{font-size:1.2rem;margin:0 0 10px;}
+  .news .lead{margin:0 0 16px;color:var(--text-soft);font-size:.94rem;line-height:1.8;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+  .news ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;counter-reset:hn;}
+  .news li{font-family:'Noto Serif KR',serif;font-size:.95rem;line-height:1.55;padding-bottom:10px;border-bottom:1px dashed var(--line);display:flex;gap:8px;}
+  .news li:last-child{border-bottom:0;padding-bottom:0;}
+  .news li::before{counter-increment:hn;content:counter(hn);color:var(--accent);font-weight:700;font-family:'Noto Sans KR',sans-serif;font-size:.82rem;padding-top:2px;}
+  .news .acts{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
 </style>
 </head>
 <body>
@@ -63,6 +76,11 @@
       <a class="btn btn-primary" href="library.html">자료실 둘러보기</a>
       <a class="btn btn-ghost" href="thoughts.html">내 생각 남기기</a>
     </div>
+  </section>
+
+  <section class="blk wrap" aria-labelledby="h-news" id="newsBlk" hidden>
+    <div class="head"><h2 id="h-news">이번 주 웰다잉 뉴스</h2><a href="library.html#news">지난 호 모두 보기 →</a></div>
+    <div class="news" id="newsCard"></div>
   </section>
 
   <section class="blk wrap" aria-labelledby="h-voices">
@@ -114,6 +132,22 @@
         (latest?'<span class="latest"><span>최근 자료</span>'+esc(latest.title)+'</span>':'<span class="latest"><span>자료 준비 중</span></span>')+'</a>';
     }).join('');
   });
+  /* 이번 주 웰다잉 뉴스: 가장 최근 호를 보여줌 (게시된 호가 없으면 섹션을 숨김) */
+  function getJSON(u){return fetch(u+'?v='+Date.now()).then(function(r){if(!r.ok)throw 0;return r.json();});}
+  getJSON('news/index.json').then(function(ix){
+    var top=(ix.issues||[])[0]; if(!top) return;
+    return getJSON('news/'+top.id+'.json').then(function(x){
+      var fresh=(Date.now()-new Date(x.id+'T00:00:00+09:00').getTime())<8*864e5;
+      var url='library.html#news-'+x.id;
+      document.getElementById('newsCard').innerHTML=
+        '<div><div class="meta"><span class="no">제'+esc(x.no)+'호</span>'+(fresh?'<span class="new">NEW</span>':'')+'<span>'+esc(x.range)+'</span></div>'
+        +'<h3>'+esc(x.title)+'</h3>'
+        +(x.lead?'<p class="lead">'+esc(x.lead)+'</p>':'')
+        +'<div class="acts"><a class="btn btn-primary btn-small" href="'+url+'">이번 호 읽기</a><span class="empty" style="font-size:.84rem">매주 주말, 함께 생각해 볼 소식 다섯 가지</span></div></div>'
+        +'<ol>'+(x.items||[]).map(function(n){return '<li><a href="'+url+'" style="color:inherit;text-decoration:none">'+esc(n.headline)+'</a></li>';}).join('')+'</ol>';
+      document.getElementById('newsBlk').hidden=false;
+    });
+  }).catch(function(){});
 })();
 </script>
 </body>
