@@ -7,7 +7,7 @@ var DC = (function(){
   var CONFIG = {
     API_URL: "https://script.google.com/macros/s/AKfycbwiy7sHsNyb04euHdOEkIgh1njshACJ3gBec9FS9ulEDRzSLIdl62Rmdp7pWh2Gbh-T/exec",
     EMAIL: "emilcha2@naver.com",
-    BRUNCH: "https://brunch.co.kr/@ujuboygpqn",
+    BRUNCH: "https://brunch.co.kr/@ujuboygpqn?tab=works",
     YOUTUBE: "https://www.youtube.com/@spiritcare139"
   };
   var FIELDS = ["왜 죽음학인가","죽음과 죽어감","생애말기와 연명의료","죽음준비"];
