@@ -26,11 +26,11 @@
   .voice{margin:0;display:flex;flex-direction:column;gap:12px;padding-top:16px;border-top:2px solid var(--accent);}
   .voice blockquote{margin:0;font-family:'Noto Serif KR',serif;font-size:1rem;line-height:1.85;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;}
   .voice figcaption{font-size:.82rem;color:var(--text-faint);}
-  .fields{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);}
+  .fields{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);}
   @media (max-width:760px){.fields{grid-template-columns:repeat(2,minmax(0,1fr));}}
   .fld{padding:18px 16px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:6px;text-decoration:none;}
   .fld:last-child{border-right:0;}
-  @media (max-width:760px){.fld:nth-child(2){border-right:0;}.fld:nth-child(-n+2){border-bottom:1px solid var(--line);}}
+  @media (max-width:760px){.fld:nth-child(2n){border-right:0;}.fld:nth-child(-n+4){border-bottom:1px solid var(--line);}.fld:nth-child(5){grid-column:1/-1;}}
   .fld:hover{background:var(--accent-soft);}
   .fld .n{font-size:.72rem;font-weight:700;color:var(--accent);letter-spacing:.06em;font-variant-numeric:tabular-nums;}
   .fld .t{font-family:'Noto Serif KR',serif;font-weight:600;font-size:1.02rem;}
@@ -130,12 +130,19 @@
       var latest=items.filter(function(x){return +x.f===i;})[0];
       return '<a class="fld" href="library.html#f'+(i+1)+'"><span class="n">0'+(i+1)+'</span><span class="t">'+t+'</span>'+
         (latest?'<span class="latest"><span>최근 자료</span>'+esc(latest.title)+'</span>':'<span class="latest"><span>자료 준비 중</span></span>')+'</a>';
-    }).join('');
+    }).join('')+newsField();
+    paintNewsField();
   });
+  /* 자료실 5번 카드: 웰다잉 뉴스 (최신 호 제목 표시) */
+  var newsTop=null;
+  function newsField(){return '<a class="fld" id="fldNews" href="library.html#news"><span class="n">05</span><span class="t">웰다잉 뉴스</span><span class="latest"><span>자료 준비 중</span></span></a>';}
+  function paintNewsField(){var el=document.getElementById('fldNews'); if(!el||!newsTop) return;
+    el.querySelector('.latest').innerHTML='<span>최근 자료 · 제'+esc(newsTop.no)+'호</span>'+esc(newsTop.title);}
   /* 이번 주 웰다잉 뉴스: 가장 최근 호를 보여줌 (게시된 호가 없으면 섹션을 숨김) */
   function getJSON(u){return fetch(u+'?v='+Date.now()).then(function(r){if(!r.ok)throw 0;return r.json();});}
   getJSON('news/index.json').then(function(ix){
     var top=(ix.issues||[])[0]; if(!top) return;
+    newsTop=top; paintNewsField();
     return getJSON('news/'+top.id+'.json').then(function(x){
       var fresh=(Date.now()-new Date(x.id+'T00:00:00+09:00').getTime())<8*864e5;
       var url='library.html#news-'+x.id;
