@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - "news/**"
+      - "library/roadmap-status.json"
       - "tools/**"
       - "library.html"
       - "assets/site.js"
