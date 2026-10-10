@@ -4,4 +4,4 @@ Disallow: /news/drafts/
 
 Sitemap: https://deathcafe.co.kr/sitemap.xml
 
-#DaumWebMasterTool:ffb0bc92e371991883a598328ca2e83a70d5425bf27e280e3ec489f02f4f91c9:TEcOMIBivQMU4H7qOlp5xQ==
+#DaumWebMasterTool:7c44406016581df1556103092a2dcbf89750d32c5ee28bec8d06042e9e709cc6:TEcOMIBivQMU4H7qOlp5xQ==
