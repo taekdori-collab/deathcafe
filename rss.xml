@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>Death Cafe 데스카페</title>
+  <link>https://deathcafe.co.kr/</link>
+  <description>웰다잉과 죽음학 자료, 매주 웰다잉 뉴스 — 차준택(Spirit Care)</description>
+  <language>ko</language>
+  <lastBuildDate>Sat, 10 Oct 2026 09:00:00 +0900</lastBuildDate>
+  <item>
+    <title>웰다잉 뉴스 위클리 제2호</title>
+    <link>https://deathcafe.co.kr/news/2026-10-10.html</link>
+    <guid isPermaLink="true">https://deathcafe.co.kr/news/2026-10-10.html</guid>
+    <description>간소해지는 장례와 호스피스의 날, 고립 예방과 상속 준비를 살핀 한 주</description>
+    <category>웰다잉 뉴스</category>
+    <pubDate>Sat, 10 Oct 2026 09:00:00 +0900</pubDate>
+  </item>
+  <item>
+    <title>웰다잉 뉴스 위클리 제1호</title>
+    <link>https://deathcafe.co.kr/news/2026-10-04.html</link>
+    <guid isPermaLink="true">https://deathcafe.co.kr/news/2026-10-04.html</guid>
+    <description>집에서의 임종 시범사업 구상과 늘어난 고독사, 남은 삶을 돌아보는 한 주</description>
+    <category>웰다잉 뉴스</category>
+    <pubDate>Sun, 04 Oct 2026 09:00:00 +0900</pubDate>
+  </item>
+  <item>
+    <title>진실은 당신을 자유롭게 할 것이다. 하지만 그 전에</title>
+    <link>https://deathcafe.co.kr/library/lib001.html</link>
+    <guid isPermaLink="true">https://deathcafe.co.kr/library/lib001.html</guid>
+    <description>글로리아 스타이넘의 문장으로 여는 죽음학 1차시 강의자료입니다. 빈칸에 들어갈 말을 먼저 떠올려 보세요.</description>
+    <category>자료실</category>
+    <pubDate>Sat, 03 Oct 2026 09:00:00 +0900</pubDate>
+  </item>
+</channel>
+</rss>

@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://deathcafe.co.kr/library.html">
 <meta property="og:image" content="https://deathcafe.co.kr/assets/profile.jpg">
 <meta property="og:locale" content="ko_KR">
-<!-- 검색엔진 소유확인 태그 자리: 네이버/구글 코드 받으면 여기에 추가 -->
+<link rel="alternate" type="application/rss+xml" title="Death Cafe 데스카페" href="https://deathcafe.co.kr/rss.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
@@ -37,8 +37,8 @@
   .chip[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text);}
   .list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line);}
   .item{border-bottom:1px solid var(--line);}
-  .item button.open{font:inherit;color:inherit;text-align:left;width:100%;background:none;border:0;cursor:pointer;padding:18px 4px;display:flex;flex-direction:column;gap:6px;}
-  .item button.open:hover .ttl{color:var(--accent);}
+  .item .open{font:inherit;color:inherit;text-align:left;width:100%;background:none;border:0;cursor:pointer;padding:18px 4px;display:flex;flex-direction:column;gap:6px;text-decoration:none;}
+  .item .open:hover .ttl{color:var(--accent);}
   .meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.8rem;color:var(--text-faint);}
   .badge{font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:5px;background:var(--surface-2);color:var(--text-soft);}
   .badge.lec{background:var(--accent-soft);color:var(--accent);}
@@ -105,11 +105,11 @@
         <div class="types" id="types" role="group" aria-label="자료 유형"></div>
         <button type="button" class="link" id="showAll">전체 분야 보기</button>
       </div>
-      <ul class="list" id="list"><li class="empty">불러오는 중입니다.</li></ul>
+      <ul class="list" id="list"><li class="item"><a class="open" href="library/lib001.html"><span class="meta"><span class="badge lec">강의자료</span><span>왜 죽음학인가</span><span>2026. 10. 3.</span></span><span class="ttl">진실은 당신을 자유롭게 할 것이다. 하지만 그 전에</span><span class="sum">글로리아 스타이넘의 문장으로 여는 죽음학 1차시 강의자료입니다. 빈칸에 들어갈 말을 먼저 떠올려 보세요.</span></a></li></ul>
     </div>
     <div id="newsPane" class="stack" hidden>
       <p class="news-intro">한 주 동안의 웰다잉·연명의료·호스피스·죽음준비 관련 소식 가운데 함께 생각해 볼 만한 다섯 가지를 골라, 요약과 함께 강사의 시선을 덧붙였습니다. 매주 주말에 새 호가 올라옵니다.</p>
-      <ul class="list" id="newsList"><li class="empty">불러오는 중입니다.</li></ul>
+      <ul class="list" id="newsList"><li class="item"><a class="open" href="news/2026-10-10.html"><span class="meta"><span class="issue-no">제2호</span><span>2026. 10. 3. ~ 10. 9.</span></span><span class="ttl">웰다잉 뉴스 위클리 제2호</span><span class="sum">간소해지는 장례와 호스피스의 날, 고립 예방과 상속 준비를 살핀 한 주</span></a></li><li class="item"><a class="open" href="news/2026-10-04.html"><span class="meta"><span class="issue-no">제1호</span><span>2026. 9. 27. ~ 10. 3.</span></span><span class="ttl">웰다잉 뉴스 위클리 제1호</span><span class="sum">집에서의 임종 시범사업 구상과 늘어난 고독사, 남은 삶을 돌아보는 한 주</span></a></li></ul>
     </div>
   </div>
   <article id="detailView" class="detail" hidden></article>
@@ -136,7 +136,7 @@
   function renderList(){
     var rows=items.filter(function(x){return (st.f===null||+x.f===st.f)&&(st.type==="전체"||x.type===st.type);});
     $('list').innerHTML=rows.length?rows.map(function(x){
-      return '<li class="item"><button type="button" class="open" data-id="'+x.id+'"><span class="meta"><span class="badge'+(x.type==="강의자료"?" lec":"")+'">'+esc(x.type)+'</span><span>'+FIELDS[+x.f]+'</span><span>'+esc(x.date)+'</span></span><span class="ttl">'+esc(x.title)+'</span><span class="sum">'+esc(x.sum)+'</span><span class="stats">공감 '+x.likes+' · 댓글 '+(x.comments||[]).length+'</span></button></li>';
+      return '<li class="item"><a class="open" href="library/'+encodeURIComponent(x.id)+'.html"><span class="meta"><span class="badge'+(x.type==="강의자료"?" lec":"")+'">'+esc(x.type)+'</span><span>'+FIELDS[+x.f]+'</span><span>'+esc(x.date)+'</span></span><span class="ttl">'+esc(x.title)+'</span><span class="sum">'+esc(x.sum)+'</span><span class="stats">공감 '+x.likes+' · 댓글 '+(x.comments||[]).length+'</span></a></li>';
     }).join(''):'<li class="empty">이 조건에 맞는 자료가 아직 없습니다.</li>';
   }
   function render(){renderFields();renderList();}
@@ -144,41 +144,7 @@
   $('fields').addEventListener('click',function(e){var b=e.target.closest('.field-btn');if(!b)return;if(b.id==='newsCard'){location.hash='news';window.scrollTo(0,0);return;}var f=+b.dataset.f;st.f=(st.f===f)?null:f;render();});
   $('types').addEventListener('click',function(e){var b=e.target.closest('.chip');if(!b)return;st.type=b.dataset.t;render();});
   $('showAll').addEventListener('click',function(){st.f=null;render();});
-  $('list').addEventListener('click',function(e){var b=e.target.closest('.open');if(!b)return;openItem(b.dataset.id);});
 
-  function openItem(id){
-    var x=items.filter(function(i){return i.id===id;})[0]; if(!x) return;
-    var liked=DC.isLiked('lib',x.id);
-    var h='<button type="button" class="back" id="back">← 목록으로</button>'
-      +'<div class="meta"><span class="badge'+(x.type==="강의자료"?" lec":"")+'">'+esc(x.type)+'</span><span>'+FIELDS[+x.f]+'</span><span>'+esc(x.date)+'</span></div>'
-      +'<h1>'+esc(x.title)+'</h1>';
-    var isImg=x.file&&/\.(png|jpe?g|gif|webp)(\?|$)/i.test(x.file);
-    if(isImg) h+='<figure class="slide"><img src="'+esc(x.file)+'" alt="'+esc(x.title)+'"></figure>';
-    if(x.body) h+='<div class="body">'+String(x.body).split(/\n\s*\n|\n/).filter(function(t){return t.trim();}).map(function(t){return '<p>'+esc(t)+'</p>';}).join('')+'</div>';
-    if(x.fileName&&!isImg) h+='<div class="attach card"><div class="fn">'+esc(x.fileName)+'</div>'+(x.file?'<a class="btn btn-primary" href="'+esc(x.file)+'" target="_blank" rel="noopener">내려받기</a>':'<span class="stats">파일 준비 중</span>')+'</div>';
-    var links='';
-    if(x.video) links+='<a class="btn btn-primary" href="'+esc(x.video)+'" target="_blank" rel="noopener">영상 보기 ↗</a>';
-    if(x.link) links+='<a class="btn btn-ghost" href="'+esc(x.link)+'" target="_blank" rel="noopener">'+esc(x.linkLabel||'원문 보기')+' ↗</a>';
-    if(links) h+='<div class="links">'+links+'</div>';
-    h+='<button type="button" class="heart" id="like" aria-pressed="'+liked+'" style="width:fit-content">'+DC.HEART+'공감해요 <span>'+x.likes+'</span></button>';
-    var cm=x.comments||[];
-    h+='<section class="comments"><h2>댓글 '+cm.length+'</h2>'
-      +cm.map(function(c){return '<div class="cmt"><span class="who">'+esc(c.name)+'<span>'+esc(c.date)+'</span></span><p>'+esc(c.text)+'</p></div>';}).join('')
-      +'<form class="cform" id="cform" novalidate><input type="text" id="cn" maxlength="20" placeholder="닉네임" aria-label="닉네임"><input type="password" id="cp" maxlength="20" placeholder="비밀번호 (삭제용)" aria-label="비밀번호"><textarea id="ct" maxlength="500" rows="3" placeholder="자료를 보고 느낀 점을 남겨주세요." aria-label="댓글 내용"></textarea><div class="foot"><p class="err" id="cerr" hidden></p><span></span><button type="submit" class="btn btn-primary">댓글 남기기</button></div></form></section>'
-      +'<div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><span>이 주제로 강의를 듣고 싶으신가요?</span><a class="btn btn-ghost btn-small" href="lecture.html">강의 신청</a></div>';
-    var d=$('detailView'); d.innerHTML=h; d.hidden=false; $('listView').hidden=true; window.scrollTo(0,0);
-    $('back').onclick=function(){d.hidden=true;$('listView').hidden=false;render();};
-    $('like').onclick=function(){var on=!DC.isLiked('lib',x.id);DC.setLiked('lib',x.id,on);x.likes=Math.max(0,x.likes+(on?1:-1));this.setAttribute('aria-pressed',on);this.querySelector('span').textContent=x.likes;DC.api("like",{kind:"lib",id:x.id,delta:on?1:-1});};
-    $('cform').onsubmit=function(e){
-      e.preventDefault();var n=$('cn').value.trim(),p=$('cp').value,t=$('ct').value.trim();
-      var pr=!n?'닉네임을 입력해 주세요.':p.length<4?'비밀번호를 4자 이상 입력해 주세요.':!t?'댓글 내용을 입력해 주세요.':'';
-      if(pr){$('cerr').textContent=pr;$('cerr').hidden=false;return;}
-      DC.api("addComment",{id:x.id,name:n,pw:p,text:t}).then(function(r){
-        if(!r.ok){$('cerr').textContent=r.error;$('cerr').hidden=false;return;}
-        x.comments=r.comments;openItem(x.id);
-      });
-    };
-  }
   DC.api("listLibrary").then(function(r){items=r.items||[];render();});
 
   /* ---------- 웰다잉 뉴스 (저장소 news/ 폴더의 JSON을 읽음) ---------- */
@@ -200,10 +166,9 @@
   }
   function renderIssues(){
     $('newsList').innerHTML=issues.length?issues.map(function(x){
-      return '<li class="item"><button type="button" class="open" data-issue="'+esc(x.id)+'"><span class="meta"><span class="issue-no">제'+esc(x.no)+'호</span><span>'+esc(x.range)+'</span></span><span class="ttl">'+esc(x.title)+'</span><span class="sum">'+esc(x.sum)+'</span></button></li>';
+      return '<li class="item"><a class="open" href="news/'+esc(x.id)+'.html"><span class="meta"><span class="issue-no">제'+esc(x.no)+'호</span><span>'+esc(x.range)+'</span></span><span class="ttl">'+esc(x.title)+'</span><span class="sum">'+esc(x.sum)+'</span></a></li>';
     }).join(''):'<li class="empty">첫 호를 준비하고 있습니다.</li>';
   }
-  $('newsList').addEventListener('click',function(e){var b=e.target.closest('.open');if(!b)return;location.hash='news-'+b.dataset.issue;});
 
   function openIssue(id,draft){
     if(!/^\d{4}-\d{2}-\d{2}$/.test(id)) return;
@@ -233,7 +198,7 @@
 
   function route(){
     var h=location.hash, mm;
-    if((mm=/^#news-(\d{4}-\d{2}-\d{2})$/.exec(h))){setTab("news");openIssue(mm[1],false);return;}
+    if((mm=/^#news-(\d{4}-\d{2}-\d{2})$/.exec(h))){location.replace('news/'+mm[1]+'.html');return;}
     if((mm=/^#draft-(\d{4}-\d{2}-\d{2})$/.exec(h))){openIssue(mm[1],true);return;}
     $('detailView').hidden=true; $('listView').hidden=false; document.title='자료실 | Death Cafe 데스카페';
     setTab(h==="#news"?"news":"lib");

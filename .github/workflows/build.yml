@@ -1,0 +1,47 @@
+# 자료실·웰다잉 뉴스 개별 페이지, sitemap.xml, rss.xml 자동 생성
+# - 뉴스 JSON 등을 올리면 바로 실행
+# - 구글 시트에 자료를 추가한 경우를 위해 3시간마다 한 번씩도 실행
+name: 검색용 페이지 생성
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "news/**"
+      - "tools/**"
+      - "library.html"
+      - "assets/site.js"
+      - ".github/workflows/build.yml"
+  schedule:
+    - cron: "17 */3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 페이지 생성
+        run: python3 tools/build.py
+      - name: 바뀐 내용이 있으면 저장
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "deathcafe-bot"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "검색용 페이지 자동 갱신"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          else
+            echo "변경 없음"
+          fi

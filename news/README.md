@@ -9,7 +9,10 @@
    - 수정 사항 반영
    - 파일을 `news/YYYY-MM-DD.json`으로 옮기고 drafts의 파일은 삭제
    - `news/index.json`의 `issues` 배열 **맨 앞**에 요약 항목 추가
-   - 게시 주소: `https://deathcafe.co.kr/library.html#news-YYYY-MM-DD`
+   - `python3 tools/build.py` 실행 → `news/YYYY-MM-DD.html` 개별 페이지, `sitemap.xml`, `rss.xml` 갱신
+     (실행을 잊어도 GitHub Actions가 push 직후 자동으로 만들어 줍니다)
+   - 게시 주소: `https://deathcafe.co.kr/news/YYYY-MM-DD.html`
+     (예전 주소 `library.html#news-YYYY-MM-DD`는 새 주소로 자동 이동)
 
 ## 호 파일 형식 (`news/YYYY-MM-DD.json`)
 ```json
@@ -43,3 +46,9 @@
 ```json
 { "id": "2026-10-10", "no": 1, "title": "...", "range": "...", "sum": "..." }
 ```
+
+## 검색 노출 (2026-10-10 추가)
+- 자료실 자료 1건 = `library/<id>.html`, 뉴스 1호 = `news/<id>.html` 페이지가 `tools/build.py`로 생성됩니다.
+- 생성된 HTML은 직접 고치지 마세요. 원본(구글 시트, news/*.json)을 고친 뒤 다시 생성합니다.
+- 홈페이지 `index.html`의 `google-site-verification`, `naver-site-verification` 태그와
+  `robots.txt`의 다음(Daum) 인증 줄은 검색엔진 소유확인용이므로 지우지 마세요.

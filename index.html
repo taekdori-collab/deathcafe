@@ -153,7 +153,7 @@
     newsTop=top; paintNewsField();
     return getJSON('news/'+top.id+'.json').then(function(x){
       var fresh=(Date.now()-new Date(x.id+'T00:00:00+09:00').getTime())<8*864e5;
-      var url='library.html#news-'+x.id;
+      var url='news/'+x.id+'.html';
       document.getElementById('newsCard').innerHTML=
         '<div><div class="meta"><span class="no">제'+esc(x.no)+'호</span>'+(fresh?'<span class="new">NEW</span>':'')+'<span>'+esc(x.range)+'</span></div>'
         +'<h3>'+esc(x.title)+'</h3>'
