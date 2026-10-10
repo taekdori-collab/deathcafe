@@ -51,4 +51,4 @@
 - 자료실 자료 1건 = `library/<id>.html`, 뉴스 1호 = `news/<id>.html` 페이지가 `tools/build.py`로 생성됩니다.
 - 생성된 HTML은 직접 고치지 마세요. 원본(구글 시트, news/*.json)을 고친 뒤 다시 생성합니다.
 - 홈페이지 `index.html`의 `google-site-verification`, `naver-site-verification` 태그와
-  `robots.txt`의 다음(Daum) 인증 줄은 검색엔진 소유확인용이므로 지우지 마세요.
+  `msvalidate.01`(Bing) 태그, `robots.txt`의 다음(Daum) 인증 줄은 검색엔진 소유확인용이므로 지우지 마세요.
