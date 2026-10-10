@@ -11,14 +11,14 @@
 <link rel="stylesheet" href="assets/style.css">
 <style>
   .stack{display:flex;flex-direction:column;gap:28px;}
-  .fields{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);}
+  .fields{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);}
   @media (max-width:640px){.fields{grid-template-columns:repeat(2,minmax(0,1fr));}}
   .field-btn{font:inherit;text-align:left;background:transparent;border:0;border-right:1px solid var(--line);padding:14px 14px 12px;cursor:pointer;color:var(--text-soft);display:flex;flex-direction:column;gap:2px;}
   .field-btn:last-child{border-right:0;}
-  @media (max-width:640px){.field-btn:nth-child(2){border-right:0;}.field-btn:nth-child(-n+2){border-bottom:1px solid var(--line);}}
+  @media (max-width:640px){.field-btn:nth-child(2n){border-right:0;}.field-btn:nth-child(-n+4){border-bottom:1px solid var(--line);}.field-btn.news-btn{grid-column:1/-1;}}
   .field-btn .n{font-size:.72rem;font-weight:700;color:var(--text-faint);letter-spacing:.06em;}
   .field-btn .t{font-family:'Noto Serif KR',serif;font-weight:600;font-size:.98rem;color:var(--text);line-height:1.4;}
-  .field-btn .c{font-size:.78rem;color:var(--text-faint);font-variant-numeric:tabular-nums;}
+  .field-btn .c{margin-top:auto;padding-top:2px;font-size:.78rem;color:var(--text-faint);font-variant-numeric:tabular-nums;}
   .field-btn[aria-pressed="true"]{background:var(--accent-soft);}
   .field-btn[aria-pressed="true"] .n{color:var(--accent);}
   .all-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:-14px;}
@@ -112,14 +112,15 @@
   "use strict";
   DC.chrome("library.html");
   var esc=DC.esc, FIELDS=DC.FIELDS, TYPES=["전체","강의자료","글","영상","소식"];
-  var items=[], st={f:null,type:"전체"}, $=function(id){return document.getElementById(id);};
+  var items=[], issues=null, st={f:null,type:"전체"}, $=function(id){return document.getElementById(id);};
   var m=/^#f([1-4])$/.exec(location.hash); if(m) st.f=+m[1]-1;
 
   function renderFields(){
     $('fields').innerHTML=FIELDS.map(function(t,i){
       var c=items.filter(function(x){return +x.f===i;}).length;
       return '<button type="button" class="field-btn" data-f="'+i+'" aria-pressed="'+(st.f===i)+'"><span class="n">0'+(i+1)+'</span><span class="t">'+t+'</span><span class="c">자료 '+c+'</span></button>';
-    }).join('');
+    }).join('')
+      +'<button type="button" class="field-btn news-btn" id="newsCard"><span class="n">05</span><span class="t">웰다잉 뉴스</span><span class="c">'+(issues&&issues.length?'최신 제'+esc(issues[0].no)+'호':'매주 업데이트')+'</span></button>';
     $('types').innerHTML=TYPES.map(function(t){return '<button type="button" class="chip" data-t="'+t+'" aria-pressed="'+(st.type===t)+'">'+t+'</button>';}).join('');
     $('showAll').hidden=st.f===null;
   }
@@ -131,7 +132,7 @@
   }
   function render(){renderFields();renderList();}
 
-  $('fields').addEventListener('click',function(e){var b=e.target.closest('.field-btn');if(!b)return;var f=+b.dataset.f;st.f=(st.f===f)?null:f;render();});
+  $('fields').addEventListener('click',function(e){var b=e.target.closest('.field-btn');if(!b)return;if(b.id==='newsCard'){location.hash='news';window.scrollTo(0,0);return;}var f=+b.dataset.f;st.f=(st.f===f)?null:f;render();});
   $('types').addEventListener('click',function(e){var b=e.target.closest('.chip');if(!b)return;st.type=b.dataset.t;render();});
   $('showAll').addEventListener('click',function(){st.f=null;render();});
   $('list').addEventListener('click',function(e){var b=e.target.closest('.open');if(!b)return;openItem(b.dataset.id);});
@@ -172,7 +173,6 @@
   DC.api("listLibrary").then(function(r){items=r.items||[];render();});
 
   /* ---------- 웰다잉 뉴스 (저장소 news/ 폴더의 JSON을 읽음) ---------- */
-  var issues=null;
   function nocache(u){return u+'?v='+Date.now();}
   function getJSON(u){return fetch(nocache(u)).then(function(r){if(!r.ok)throw 0;return r.json();});}
   function setTab(t){
@@ -186,7 +186,7 @@
 
   function loadIssues(){
     if(issues){renderIssues();return Promise.resolve();}
-    return getJSON('news/index.json').then(function(d){issues=d.issues||[];renderIssues();})
+    return getJSON('news/index.json').then(function(d){issues=d.issues||[];renderIssues();renderFields();})
       .catch(function(){issues=[];renderIssues();});
   }
   function renderIssues(){
@@ -231,6 +231,7 @@
   }
   window.addEventListener('hashchange',route);
   route();
+  loadIssues();
 })();
 </script>
 </body>
