@@ -196,10 +196,42 @@
     });
   }
 
+  /* ---------- 자료실 초안 미리보기 (library/drafts/<id>.json, 메뉴에 노출 안 됨) ---------- */
+  function paras(t){return String(t||'').split(/\n/).filter(function(p){return p.trim();}).map(function(p){return '<p>'+esc(p)+'</p>';}).join('');}
+  function openLibDraft(id){
+    if(!/^[A-Za-z0-9_-]{1,64}$/.test(id)) return;
+    getJSON('library/drafts/'+id+'.json').then(function(x){
+      var f=+x.f, isImg=x.file&&/\.(png|jpe?g|gif|webp)(\?|$)/i.test(x.file), rv=x.review||{};
+      var h='<a class="back" href="library.html" style="text-decoration:none">← 자료실 목록</a>'
+        +'<div class="draft-bar"><b>검토용 초안입니다.</b> 아직 게시되지 않았고, 메뉴에서도 보이지 않습니다.'+(x.roadmap?' (로드맵 '+esc(x.roadmap)+')':'')+'</div>'
+        +'<div class="meta"><span class="badge'+(x.type==="강의자료"?" lec":"")+'">'+esc(x.type)+'</span><span>'+(FIELDS[f]||'')+'</span><span>'+esc(x.date||'게시일 미정')+'</span></div>'
+        +'<h1>'+esc(x.title)+'</h1><p class="sum" style="margin:0">'+esc(x.sum)+'</p>';
+      if(isImg) h+='<figure class="slide"><img src="'+esc(x.file)+'" alt="'+esc(x.title)+'"></figure>';
+      if(x.body) h+='<div class="body">'+paras(x.body)+'</div>';
+      var links='';
+      if(x.video) links+='<a class="btn btn-primary" href="'+esc(x.video)+'" target="_blank" rel="noopener">영상 보기 ↗</a>';
+      if(x.link) links+='<a class="btn btn-ghost" href="'+esc(x.link)+'" target="_blank" rel="noopener">'+esc(x.linkLabel||'원문 보기')+' ↗</a>';
+      if(links) h+='<div class="links">'+links+'</div>';
+      var list=function(a){return (a||[]).map(function(t){return '<li>'+(typeof t==='string'?esc(t):'<a href="'+esc(t.url)+'" target="_blank" rel="noopener">'+esc(t.title)+'</a>')+'</li>';}).join('');};
+      if(rv.notes||rv.sources||rv.withheld) h+='<section class="card" style="display:flex;flex-direction:column;gap:8px;font-size:.9rem">'
+        +'<b>검토 메모 (게시 화면에는 나오지 않습니다)</b>'
+        +(rv.notes?'<div>확인해 주실 점<ul style="margin:4px 0 0">'+list(rv.notes)+'</ul></div>':'')
+        +(rv.withheld?'<div>강의용으로 남겨둔 내용<ul style="margin:4px 0 0">'+list(rv.withheld)+'</ul></div>':'')
+        +(rv.slides?'<div>바탕 슬라이드: '+esc(rv.slides)+'</div>':'')
+        +(rv.sources?'<div>참고한 자료<ul style="margin:4px 0 0">'+list(rv.sources)+'</ul></div>':'')
+        +'</section>';
+      var d=$('detailView'); d.innerHTML=h; d.hidden=false; $('listView').hidden=true; window.scrollTo(0,0);
+      document.title='[초안] '+x.title;
+    }).catch(function(){
+      var d=$('detailView'); d.innerHTML='<a class="back" href="library.html">← 자료실 목록</a><p class="empty">해당 초안을 찾을 수 없습니다.</p>'; d.hidden=false; $('listView').hidden=true;
+    });
+  }
+
   function route(){
     var h=location.hash, mm;
     if((mm=/^#news-(\d{4}-\d{2}-\d{2})$/.exec(h))){location.replace('news/'+mm[1]+'.html');return;}
     if((mm=/^#draft-(\d{4}-\d{2}-\d{2})$/.exec(h))){openIssue(mm[1],true);return;}
+    if((mm=/^#libdraft-([A-Za-z0-9_-]{1,64})$/.exec(h))){openLibDraft(mm[1]);return;}
     $('detailView').hidden=true; $('listView').hidden=false; document.title='자료실 | Death Cafe 데스카페';
     setTab(h==="#news"?"news":"lib");
   }

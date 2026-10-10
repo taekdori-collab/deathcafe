@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /news/drafts/
+Disallow: /library/drafts/
 
 Sitemap: https://deathcafe.co.kr/sitemap.xml
 
