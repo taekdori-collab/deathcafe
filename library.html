@@ -52,6 +52,8 @@
   .body{margin:0;}
   .body p{margin:0 0 1em;line-height:1.85;}
   .body p:last-child{margin-bottom:0;}
+  .body strong{font-weight:700;}
+  .body .hl{color:var(--accent);}
   .slide{margin:0;}
   .slide img{display:block;width:100%;height:auto;border-radius:12px;border:1px solid var(--line);}
   .attach{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;}
@@ -197,7 +199,8 @@
   }
 
   /* ---------- 자료실 초안 미리보기 (library/drafts/<id>.json, 메뉴에 노출 안 됨) ---------- */
-  function paras(t){return String(t||'').split(/\n/).filter(function(p){return p.trim();}).map(function(p){return '<p>'+esc(p)+'</p>';}).join('');}
+  function fmt(p){return esc(p).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/==(.+?)==/g,'<span class="hl">$1</span>');}
+  function paras(t){return String(t||'').split(/\n/).filter(function(p){return p.trim();}).map(function(p){return '<p>'+fmt(p)+'</p>';}).join('');}
   function openLibDraft(id){
     if(!/^[A-Za-z0-9_-]{1,64}$/.test(id)) return;
     getJSON('library/drafts/'+id+'.json').then(function(x){

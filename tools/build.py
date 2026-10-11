@@ -93,7 +93,15 @@ def fetch_library():
 
 def paragraphs(text):
     parts = [t.strip() for t in re.split(r"\n", str(text or "")) if t.strip()]
-    return "".join("<p>%s</p>" % esc(t) for t in parts)
+    return "".join("<p>%s</p>" % fmt(t) for t in parts)
+
+
+def fmt(t):
+    """본문 강조 표시: **굵게**, ==강조색== (library.html의 fmt와 같은 규칙)"""
+    s = esc(t)
+    s = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", s)
+    s = re.sub(r"==(.+?)==", r'<span class="hl">\1</span>', s)
+    return s
 
 
 def page_styles():
