@@ -28,7 +28,8 @@ var DC = (function(){
     if(foot) foot.innerHTML =
       '<div class="site-footer"><div class="wrap"><div class="foot"><span>© Death Cafe 데스카페 · 차준택 (Spirit Care) · '+CONFIG.EMAIL+'</span>'+
       '<span class="links"><a href="'+CONFIG.BRUNCH+'" target="_blank" rel="noopener">브런치</a><a href="'+CONFIG.YOUTUBE+'" target="_blank" rel="noopener">유튜브</a></span></div>'+
-      '<p class="care">마음이 많이 힘드시다면 혼자 견디지 마세요. 자살예방 상담전화 109 (24시간)</p></div></div>';
+      '<p class="care">마음이 많이 힘드시다면 혼자 견디지 마세요. 자살예방 상담전화 109 (24시간)</p>'+
+      '<p class="care" style="opacity:.7">이 사이트는 방문 통계를 위해 Google 애널리틱스(쿠키)를 사용합니다. 개인을 식별하는 정보는 수집하지 않습니다.</p></div></div>';
   }
 
   /* ---------- 예시 데이터 (API_URL이 비어 있을 때만 사용) ---------- */

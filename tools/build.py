@@ -119,6 +119,9 @@ def head(title, desc, path, image=None, kind="article", jsonld=None):
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<!-- Google Analytics (방문자 통계) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4SY5YWQJR"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-Y4SY5YWQJR');</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="/">
 <title>{esc(title)}</title>
