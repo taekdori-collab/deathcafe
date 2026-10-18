@@ -5,6 +5,7 @@
   --line:#dcd5c5; --accent:#a2672a; --accent-ink:#fbf7ef; --accent-soft:#f3e4c9;
   --band:#1d2733; --band-text:#ece6d9; --band-soft:#b3ab9b; --band-accent:#e0b46f;
   --danger:#a23c2c; --ok:#3f6b4a; --focus:#c98a3e;
+  --hit0:#f6dc9f; --hit1:#d5e4c3; --hit2:#f1cfc2;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
@@ -14,6 +15,7 @@
     --line:#324050; --accent:#e0b46f; --accent-ink:#1a1308; --accent-soft:#3a2f1f;
     --band:#0b1016; --band-text:#ece6d9; --band-soft:#a79f8f; --band-accent:#e0b46f;
     --danger:#e0806f; --ok:#8fc39c; --focus:#e0b46f;
+    --hit0:#5c4419; --hit1:#2f4529; --hit2:#57312a;
     color-scheme:dark;
   }
 }
@@ -84,3 +86,15 @@ main{padding-bottom:72px;}
 .foot .links{display:flex;gap:14px;flex-wrap:wrap;}
 .foot a{color:var(--text-soft);text-underline-offset:3px;}
 .care{margin:14px 0 0;color:var(--text-soft);}
+
+/* 검색어 표시 (자료실 검색 결과 · 자료 상세 화면) */
+mark.hit{background:var(--hit0);color:inherit;border-radius:3px;padding:0 2px;-webkit-box-decoration-break:clone;box-decoration-break:clone;}
+mark.hit.h1{background:var(--hit1);}
+mark.hit.h2{background:var(--hit2);}
+mark.hit.cur{outline:2px solid var(--accent);outline-offset:1px;}
+.findbar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:20;display:flex;align-items:center;gap:6px;max-width:calc(100% - 32px);padding:6px 6px 6px 14px;border-radius:999px;background:var(--surface);border:1px solid var(--line);box-shadow:0 6px 24px rgba(0,0,0,.14);font-size:.86rem;color:var(--text-soft);}
+.findbar .fb-q{display:flex;gap:4px;flex-wrap:wrap;color:var(--text);font-weight:500;min-width:0;}
+.findbar .fb-n{white-space:nowrap;font-variant-numeric:tabular-nums;padding:0 4px;}
+.findbar .fb-n.wrap{white-space:normal;}
+.findbar button{font:inherit;width:34px;height:34px;flex:none;border-radius:999px;border:0;background:var(--surface-2);color:var(--text);cursor:pointer;}
+.findbar button:hover{background:var(--accent-soft);}

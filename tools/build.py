@@ -9,6 +9,7 @@
   news/<id>.html      웰다잉 뉴스 1호 = 페이지 1개
   sitemap.xml         검색엔진용 전체 페이지 목록
   rss.xml             새 글 알림(네이버 서치어드바이저 RSS 제출용)
+  news/search.json    자료실 검색창이 웰다잉 뉴스 본문까지 찾도록 모은 글자
   library.html        목록 부분을 미리 채워 둠(자바스크립트 없이도 링크가 보이게)
 
 사용법
@@ -267,6 +268,19 @@ def issue_page(x):
     return path, "\n".join(out)
 
 
+# ---------------------------------------------------------------- 뉴스 검색용 글자
+def issue_search_text(x):
+    """한 호의 머리말·기사 제목·요약·출처·강사의 시선을 한 덩어리 글자로"""
+    parts = [x.get("lead", "")]
+    for n in x.get("items") or []:
+        parts += [n.get("headline", ""), n.get("summary", ""), n.get("source", ""), n.get("comment", "")]
+    return "\n".join(t.strip() for t in parts if t and str(t).strip())
+
+
+def news_search_json(rows):
+    return json.dumps({"issues": rows}, ensure_ascii=False, indent=1) + "\n"
+
+
 # ---------------------------------------------------------------- 목록 미리 채우기
 def prefill_library_html(items, issues):
     src = read(p("library.html"))
@@ -332,7 +346,7 @@ def main():
     issues = json.loads(read(p("news", "index.json"))).get("issues", [])
     issues = [x for x in issues if re.match(r"^\d{4}-\d{2}-\d{2}$", str(x.get("id", "")))]
 
-    changed, entries, keep = [], [], set()
+    changed, entries, keep, search_rows = [], [], set(), []
     for x in items:
         path, text = item_page(x)
         keep.add(path)
@@ -348,6 +362,9 @@ def main():
             changed.append(path)
         entries.append({"path": path, "date": kdate(full.get("date")) or kdate(full["id"]),
                         "title": full.get("title", ""), "desc": full.get("sum", ""), "cat": "웰다잉 뉴스"})
+        search_rows.append({"id": meta["id"], "text": issue_search_text(full)})
+    if write_if_changed(p("news", "search.json"), news_search_json(search_rows)):
+        changed.append("news/search.json")
 
     # 시트에서 지워진 자료의 페이지는 정리
     for old in glob.glob(p("library", "*.html")):

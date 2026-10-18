@@ -29,7 +29,100 @@ var DC = (function(){
       '<div class="site-footer"><div class="wrap"><div class="foot"><span>© Death Cafe 데스카페 · 차준택 (Spirit Care) · '+CONFIG.EMAIL+'</span>'+
       '<span class="links"><a href="'+CONFIG.BRUNCH+'" target="_blank" rel="noopener">브런치</a><a href="'+CONFIG.YOUTUBE+'" target="_blank" rel="noopener">유튜브</a></span></div>'+
       '<p class="care">마음이 많이 힘드시다면 혼자 견디지 마세요. 자살예방 상담전화 109 (24시간)</p>'+
-      '<p class="care" style="opacity:.7">이 사이트는 방문 통계를 위해 Google 애널리틱스(쿠키)를 사용합니다. 개인을 식별하는 정보는 수집하지 않습니다.</p></div></div>';
+      '<p class="care" style="opacity:.7">이 사이트는 방문 통계를 위해 Google 애널리틱스(쿠키)를 사용합니다. 개인을 식별하는 정보는 수집하지 않습니다.</p></div></div>';    if(qParam()) setTimeout(markDetail,0);
+  }
+
+  /* ---------- 검색 ----------
+     자료실 검색창(library.html)과, 검색 결과에서 연 자료 화면(주소 끝 ?q=검색어)에서
+     검색어에 바탕색을 칠합니다. 글자 덩어리로 찾으므로 '연명'은 '연명의료를'에서도 찾습니다. */
+  function terms(q){
+    var seen={}, out=[];
+    String(q==null?"":q).toLowerCase().replace(/\*\*|==/g," ").split(/\s+/).forEach(function(t){
+      try{t=t.normalize("NFC");}catch(e){}
+      if(t && !seen[t]){seen[t]=1; out.push(t);}
+    });
+    return out.slice(0,5);
+  }
+  function ranges(text, ts){
+    var low=String(text).toLowerCase(), r=[], m=[];
+    ts.forEach(function(t,k){var i=0; while(t && (i=low.indexOf(t,i))>-1){r.push([i,i+t.length,k]); i+=t.length;}});
+    r.sort(function(a,b){return a[0]-b[0]||b[1]-a[1];});
+    r.forEach(function(x){var l=m[m.length-1]; if(l && x[0]<l[1]){if(x[1]>l[1]) l[1]=x[1];} else m.push(x.slice());});
+    return m;
+  }
+  function has(text, t){return String(text||"").toLowerCase().indexOf(t)>-1;}
+  function markHTML(text, ts){
+    text=String(text==null?"":text);
+    var out="", p=0;
+    (ts&&ts.length?ranges(text,ts):[]).forEach(function(x){
+      out+=esc(text.slice(p,x[0]))+'<mark class="hit h'+(x[2]%3)+'">'+esc(text.slice(x[0],x[1]))+'</mark>'; p=x[1];
+    });
+    return out+esc(text.slice(p));
+  }
+  /* 본문 가운데 검색어가 나온 앞뒤 한두 줄 */
+  function snippet(text, ts, len){
+    text=String(text||"").replace(/\*\*|==/g,"").replace(/\s+/g," ").trim();
+    var r=ranges(text,ts); if(!r.length) return "";
+    var s=Math.max(0,r[0][0]-34), e=Math.min(text.length,s+(len||120));
+    return (s>0?"… ":"")+markHTML(text.slice(s,e),ts)+(e<text.length?" …":"");
+  }
+  function qParam(){
+    var m=/[?&]q=([^&#]*)/.exec(location.search); if(!m) return "";
+    try{return decodeURIComponent(m[1].replace(/\+/g," ")).trim();}catch(e){return "";}
+  }
+  function markDom(root, ts){
+    var nodes=[], n, marks=[];
+    var w=document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode:function(t){
+      if(!t.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      return t.parentNode.closest("script,style,mark,button,.back,.comments,.findbar") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+    }});
+    while((n=w.nextNode())) nodes.push(n);
+    nodes.forEach(function(node){
+      var text=node.nodeValue, r=ranges(text,ts), frag, p=0; if(!r.length) return;
+      frag=document.createDocumentFragment();
+      r.forEach(function(x){
+        frag.appendChild(document.createTextNode(text.slice(p,x[0])));
+        var m=document.createElement("mark"); m.className="hit h"+(x[2]%3); m.textContent=text.slice(x[0],x[1]);
+        frag.appendChild(m); marks.push(m); p=x[1];
+      });
+      frag.appendChild(document.createTextNode(text.slice(p)));
+      node.parentNode.replaceChild(frag,node);
+    });
+    return marks;
+  }
+  /* 자료·뉴스 화면: 검색어 칠하기 + 위치 이동 막대 */
+  function markDetail(){
+    var root=document.querySelector(".detail"), q=qParam(), ts=terms(q);
+    if(!root || root.hidden || !ts.length || document.querySelector(".findbar")) return;
+    var back=root.querySelector("a.back");
+    if(back){
+      var h=back.getAttribute("href"), i=h.indexOf("#");
+      back.setAttribute("href",(i<0?h:h.slice(0,i))+"?q="+encodeURIComponent(q)+(i<0?"":h.slice(i)));
+    }
+    var marks=markDom(root,ts), cur=-1, bar=document.createElement("div");
+    var label=ts.map(function(t,k){return '<mark class="hit h'+(k%3)+'">'+esc(t)+'</mark>';}).join("");
+    bar.className="findbar"; bar.setAttribute("role","status");
+    bar.innerHTML=marks.length
+      ? '<span class="fb-q">'+label+'</span><span class="fb-n">'+marks.length+'곳</span><button type="button" data-d="-1" aria-label="이전 위치">▲</button><button type="button" data-d="1" aria-label="다음 위치">▼</button><button type="button" data-x aria-label="검색어 표시 끄기">✕</button>'
+      : '<span class="fb-q">'+label+'</span><span class="fb-n wrap">본문에 같은 말은 없지만 관련 키워드로 찾은 자료입니다</span><button type="button" data-x aria-label="닫기">✕</button>';
+    document.body.appendChild(bar);
+    function go(i){
+      if(cur>-1) marks[cur].classList.remove("cur");
+      cur=(i+marks.length)%marks.length; marks[cur].classList.add("cur");
+      marks[cur].scrollIntoView({block:"center",behavior:"smooth"});
+      bar.querySelector(".fb-n").textContent=(cur+1)+" / "+marks.length+"곳";
+    }
+    bar.addEventListener("click",function(e){
+      var b=e.target.closest("button"); if(!b) return;
+      if(b.hasAttribute("data-x")){
+        marks.forEach(function(m){m.parentNode.replaceChild(document.createTextNode(m.textContent),m);});
+        root.normalize(); bar.parentNode.removeChild(bar);
+        try{history.replaceState(null,"",location.pathname+location.hash);}catch(err){}
+        return;
+      }
+      go(cur+(+b.dataset.d));
+    });
+    if(marks.length) setTimeout(function(){go(0);},300);
   }
 
   /* ---------- 예시 데이터 (API_URL이 비어 있을 때만 사용) ---------- */
@@ -83,5 +176,6 @@ var DC = (function(){
   function isLiked(kind,id){try{return localStorage.getItem(likedKey(kind,id))==="1";}catch(e){return false;}}
   function setLiked(kind,id,v){try{v?localStorage.setItem(likedKey(kind,id),"1"):localStorage.removeItem(likedKey(kind,id));}catch(e){}}
 
-  return {CONFIG:CONFIG, FIELDS:FIELDS, esc:esc, HEART:HEART, chrome:chrome, api:api, isLiked:isLiked, setLiked:setLiked};
+  return {CONFIG:CONFIG, FIELDS:FIELDS, esc:esc, HEART:HEART, chrome:chrome, api:api, isLiked:isLiked, setLiked:setLiked,
+          terms:terms, ranges:ranges, has:has, markHTML:markHTML, snippet:snippet, qParam:qParam, markDetail:markDetail};
 })();

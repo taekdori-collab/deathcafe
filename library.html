@@ -89,6 +89,21 @@
   .view{border-left:3px solid var(--accent);padding:4px 0 4px 12px;font-size:.93rem;line-height:1.75;}
   .view b{display:block;font-size:.76rem;letter-spacing:.06em;color:var(--accent);margin-bottom:2px;}
   .note{font-size:.82rem;color:var(--text-faint);margin:0;}
+  /* 검색 */
+  .search{position:relative;display:flex;align-items:center;}
+  .search svg{position:absolute;left:14px;width:18px;height:18px;color:var(--text-faint);pointer-events:none;}
+  .search input{width:100%;padding:12px 44px 12px 42px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:inherit;font-size:1rem;-webkit-appearance:none;appearance:none;}
+  .search input::-webkit-search-cancel-button{display:none;}
+  .search input:focus{outline:2px solid var(--focus);outline-offset:1px;border-color:transparent;}
+  .search .clear{position:absolute;right:6px;width:34px;height:34px;border-radius:999px;border:0;background:transparent;color:var(--text-faint);cursor:pointer;font:inherit;}
+  .search .clear:hover{background:var(--surface-2);color:var(--text);}
+  .result-line{margin:-6px 0 0;font-size:.88rem;color:var(--text-soft);}
+  .result-line b{color:var(--text);}
+  .snip{font-size:.86rem;color:var(--text-soft);line-height:1.7;border-left:2px solid var(--line);padding-left:10px;}
+  .snip .k{color:var(--text-faint);margin-right:4px;}
+  .more{display:flex;flex-direction:column;gap:8px;margin-top:-6px;}
+  .more p{margin:0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:.88rem;color:var(--text-soft);background:var(--surface-2);border-radius:10px;padding:10px 14px;}
+  .more button{font:inherit;font-size:.86rem;font-weight:700;background:none;border:0;color:var(--accent);cursor:pointer;padding:0;}
 </style>
 </head>
 <body>
@@ -104,6 +119,12 @@
       <button type="button" class="tab" role="tab" id="tabLib" aria-selected="true">주제별 자료</button>
       <button type="button" class="tab" role="tab" id="tabNews" aria-selected="false">웰다잉 뉴스</button>
     </div>
+    <form class="search" id="searchForm" role="search" action="library.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15zM16 16l5 5"/></svg>
+      <input type="search" id="q" name="q" placeholder="제목이나 본문의 낱말로 찾기" aria-label="자료실 검색" autocomplete="off" enterkeyhint="search">
+      <button type="button" class="clear" id="qClear" aria-label="검색어 지우기" hidden>✕</button>
+    </form>
+    <p class="result-line" id="resultLine" aria-live="polite" hidden></p>
     <div id="libPane" class="stack">
       <div class="fields" id="fields" role="group" aria-label="분야 선택"></div>
       <div class="all-row">
@@ -111,10 +132,12 @@
         <button type="button" class="link" id="showAll">전체 분야 보기</button>
       </div>
       <ul class="list" id="list"><li class="item"><a class="open" href="library/lib004.html"><span class="meta"><span class="badge lec">강의자료</span><span>죽음준비</span><span>2026. 10. 18.</span></span><span class="ttl">데스카페(Death Cafe)란? 차 한 잔과 함께 죽음을 이야기하는 모임</span><span class="sum">낯선 사람들이 차를 마시며 죽음을 이야기하는 데스카페. 스위스에서 시작해 약 100개 나라로 퍼진 이 모임의 기원과 원칙, 그리고 이 홈페이지 이름에 담은 뜻을 소개합니다.</span></a></li><li class="item"><a class="open" href="library/lib005.html"><span class="meta"><span class="badge lec">강의자료</span><span>왜 죽음학인가</span><span>2026. 10. 18.</span></span><span class="ttl">죽음학(싸나톨로지)이란? 죽음을 연구하는 학문의 뜻과 역사</span><span class="sum">죽음을 연구하는 학문, 죽음학(thanatology). 의학·심리학·철학을 아우르는 이 학문이 무엇을 묻고 어떻게 생겨났는지, 국제 싸나톨로지스트가 정리했습니다.</span></a></li><li class="item"><a class="open" href="library/lib002.html"><span class="meta"><span class="badge lec">강의자료</span><span>죽음과 죽어감</span><span>2026. 10. 11.</span></span><span class="ttl">퀴블러 로스의 죽음 5단계: 부정·분노·타협·우울·수용, 꼭 순서대로 올까?</span><span class="sum">죽음을 앞둔 사람의 마음을 설명하는 가장 유명한 이론입니다. 다섯 단계의 뜻과, 오늘날 이 이론을 어떻게 받아들이면 좋을지 정리했습니다.</span></a></li><li class="item"><a class="open" href="library/lib003.html"><span class="meta"><span class="badge lec">강의자료</span><span>생애말기와 연명의료</span><span>2026. 10. 11.</span></span><span class="ttl">사전연명의료의향서란? 작성 방법, 등록기관, 효력까지 한눈에 (2026년 기준)</span><span class="sum">19세 이상이면 누구나 쓸 수 있는 사전연명의료의향서. 무엇을 결정하는 서류인지, 어디서 어떻게 쓰는지, 언제 효력이 생기는지 정리했습니다.</span></a></li><li class="item"><a class="open" href="library/lib001.html"><span class="meta"><span class="badge lec">강의자료</span><span>왜 죽음학인가</span><span>2026. 10. 3.</span></span><span class="ttl">진실은 당신을 자유롭게 할 것이다. 하지만 그 전에</span><span class="sum">글로리아 스타이넘의 문장으로 여는 죽음학 1차시 강의자료입니다. 빈칸에 들어갈 말을 먼저 떠올려 보세요.</span></a></li></ul>
+      <div class="more" id="libMore"></div>
     </div>
     <div id="newsPane" class="stack" hidden>
       <p class="news-intro">한 주 동안의 웰다잉·연명의료·호스피스·죽음준비 관련 소식 가운데 함께 생각해 볼 만한 다섯 가지를 골라, 요약과 함께 강사의 시선을 덧붙였습니다. 매주 주말에 새 호가 올라옵니다.</p>
       <ul class="list" id="newsList"><li class="item"><a class="open" href="news/2026-10-17.html"><span class="meta"><span class="issue-no">제3호</span><span>2026. 10. 10. ~ 10. 16.</span></span><span class="ttl">웰다잉 뉴스 위클리 제3호</span><span class="sum">연명의료 제도 손질과 호스피스 확충, 떠난 뒤 남는 빈자리를 살핀 한 주</span></a></li><li class="item"><a class="open" href="news/2026-10-10.html"><span class="meta"><span class="issue-no">제2호</span><span>2026. 10. 3. ~ 10. 9.</span></span><span class="ttl">웰다잉 뉴스 위클리 제2호</span><span class="sum">간소해지는 장례와 호스피스의 날, 고립 예방과 상속 준비를 살핀 한 주</span></a></li><li class="item"><a class="open" href="news/2026-10-04.html"><span class="meta"><span class="issue-no">제1호</span><span>2026. 9. 27. ~ 10. 3.</span></span><span class="ttl">웰다잉 뉴스 위클리 제1호</span><span class="sum">집에서의 임종 시범사업 구상과 늘어난 고독사, 남은 삶을 돌아보는 한 주</span></a></li></ul>
+      <div class="more" id="newsMore"></div>
     </div>
   </div>
   <article id="detailView" class="detail" hidden></article>
@@ -126,43 +149,126 @@
   "use strict";
   DC.chrome("library.html");
   var esc=DC.esc, FIELDS=DC.FIELDS, TYPES=["전체","강의자료","글","영상","소식"];
-  var items=[], issues=null, st={f:null,type:"전체"}, $=function(id){return document.getElementById(id);};
+  var items=[], issues=null, kw={}, newsText=null, tab="lib", st={f:null,type:"전체",q:DC.qParam()}, $=function(id){return document.getElementById(id);};
   var m=/^#f([1-4])$/.exec(location.hash); if(m) st.f=+m[1]-1;
 
   function renderFields(){
     $('fields').innerHTML=FIELDS.map(function(t,i){
-      var c=items.filter(function(x){return +x.f===i;}).length;
-      return '<button type="button" class="field-btn" data-f="'+i+'" aria-pressed="'+(st.f===i)+'"><span class="n">0'+(i+1)+'</span><span class="t">'+t+'</span><span class="c">자료 '+c+'</span></button>';
+      var ts=DC.terms(st.q);
+      var c=items.filter(function(x){return +x.f===i&&(!ts.length||((st.type==="전체"||x.type===st.type)&&libMatch(x,ts)));}).length;
+      return '<button type="button" class="field-btn" data-f="'+i+'" aria-pressed="'+(st.f===i)+'"><span class="n">0'+(i+1)+'</span><span class="t">'+t+'</span><span class="c">'+(ts.length?'검색 결과 '+c:'자료 '+c)+'</span></button>';
     }).join('')
       +'<button type="button" class="field-btn news-btn" id="newsCard"><span class="n">05</span><span class="t">웰다잉 뉴스</span><span class="c">'+(issues&&issues.length?'최신 제'+esc(issues[0].no)+'호':'매주 업데이트')+'</span></button>';
     $('types').innerHTML=TYPES.map(function(t){return '<button type="button" class="chip" data-t="'+t+'" aria-pressed="'+(st.type===t)+'">'+t+'</button>';}).join('');
     $('showAll').hidden=st.f===null;
   }
-  function renderList(){
-    var rows=items.filter(function(x){return (st.f===null||+x.f===st.f)&&(st.type==="전체"||x.type===st.type);});
-    $('list').innerHTML=rows.length?rows.map(function(x){
-      return '<li class="item"><a class="open" href="library/'+encodeURIComponent(x.id)+'.html"><span class="meta"><span class="badge'+(x.type==="강의자료"?" lec":"")+'">'+esc(x.type)+'</span><span>'+FIELDS[+x.f]+'</span><span>'+esc(x.date)+'</span></span><span class="ttl">'+esc(x.title)+'</span><span class="sum">'+esc(x.sum)+'</span><span class="stats">공감 '+x.likes+' · 댓글 '+(x.comments||[]).length+'</span></a></li>';
-    }).join(''):'<li class="empty">이 조건에 맞는 자료가 아직 없습니다.</li>';
+  /* ---------- 검색: 제목·요약·본문·관련 키워드에서 모든 낱말이 들어간 자료 ---------- */
+  function libText(x){return [x.title,x.sum,x.body,kw[x.id],x.type,FIELDS[+x.f]].join('\n');}
+  function libMatch(x,ts){var h=libText(x);return ts.every(function(t){return DC.has(h,t);});}
+  function libScore(x,ts){return ts.reduce(function(a,t){return a+(DC.has(x.title,t)?6:0)+(DC.has(x.sum,t)?3:0)+(DC.has(kw[x.id],t)?2:0)+(DC.has(x.body,t)?1:0);},0);}
+  function ranked(rows,ts,score){
+    return rows.map(function(x,i){return {x:x,s:score(x,ts),i:i};}).sort(function(a,b){return b.s-a.s||a.i-b.i;}).map(function(o){return o.x;});
   }
-  function render(){renderFields();renderList();}
+  function qs(){return st.q.trim()?'?q='+encodeURIComponent(st.q.trim()):'';}
+  function newsMatches(ts){
+    if(!issues||!newsText) return null;
+    return issues.filter(function(x){var h=[x.title,x.sum,x.range,newsText[x.id]].join('\n');return ts.every(function(t){return DC.has(h,t);});});
+  }
+  /* 제목·요약에 없는 낱말은 본문에서 그 낱말이 나온 앞뒤를 보여줌 */
+  function snipFor(head,body,keys,ts){
+    var miss=ts.filter(function(t){return !DC.has(head,t);});
+    if(!miss.length) return '';
+    var sn=DC.snippet(body,miss);
+    if(sn) return '<span class="snip">'+sn+'</span>';
+    var hit=String(keys||'').split(/\s*,\s*/).filter(function(k){return miss.some(function(t){return DC.has(k,t);});});
+    if(hit.length) return '<span class="snip"><span class="k">관련 키워드</span>'+hit.map(function(k){return DC.markHTML(k,miss);}).join(', ')+'</span>';
+    return '';
+  }
+  function resultLine(n,scope){
+    var ts=DC.terms(st.q), el=$('resultLine');
+    if(!ts.length){el.hidden=true;return;}
+    el.innerHTML=ts.map(function(t,k){return '<mark class="hit h'+(k%3)+'">'+esc(t)+'</mark>';}).join(' ')+' 검색 결과 <b>'+n+'건</b>'+(scope?' · '+esc(scope):'');
+    el.hidden=false;
+  }
+  function placeholder(){
+    $('q').placeholder=tab==="news"?'웰다잉 뉴스에서 찾기':st.f!==null?'‘'+FIELDS[st.f]+'’에서 찾기':'제목이나 본문의 낱말로 찾기';
+    $('qClear').hidden=!st.q;
+  }
+
+  function renderList(){
+    var ts=DC.terms(st.q);
+    var rows=items.filter(function(x){return (st.f===null||+x.f===st.f)&&(st.type==="전체"||x.type===st.type);});
+    if(ts.length) rows=ranked(rows.filter(function(x){return libMatch(x,ts);}),ts,libScore);
+    $('list').innerHTML=rows.length?rows.map(function(x){
+      return '<li class="item"><a class="open" href="library/'+encodeURIComponent(x.id)+'.html'+qs()+'"><span class="meta"><span class="badge'+(x.type==="강의자료"?" lec":"")+'">'+esc(x.type)+'</span><span>'+FIELDS[+x.f]+'</span><span>'+esc(x.date)+'</span></span><span class="ttl">'+DC.markHTML(x.title,ts)+'</span><span class="sum">'+DC.markHTML(x.sum,ts)+'</span>'+(ts.length?snipFor(x.title+' '+x.sum,x.body,kw[x.id],ts):'')+'<span class="stats">공감 '+x.likes+' · 댓글 '+(x.comments||[]).length+'</span></a></li>';
+    }).join(''):'<li class="empty">'+(ts.length?'이 조건에서는 검색어가 들어간 자료가 없습니다.':'이 조건에 맞는 자료가 아직 없습니다.')+'</li>';
+    if(tab!=="news") resultLine(rows.length,[st.f!==null?FIELDS[st.f]:'',st.type!=="전체"?st.type:''].filter(Boolean).join(' · '));
+    var more='';
+    if(ts.length){
+      var all=items.filter(function(x){return libMatch(x,ts);}).length, extra=all-rows.length;
+      if(extra>0) more+='<p><span>전체 자료실에서는 <b>'+extra+'건</b> 더 있습니다.</span><button type="button" data-go="all">전체에서 보기 →</button></p>';
+      var nm=newsMatches(ts);
+      if(nm&&nm.length) more+='<p><span>웰다잉 뉴스에서도 <b>'+nm.length+'개 호</b>에서 찾았습니다.</span><button type="button" data-go="news">뉴스에서 보기 →</button></p>';
+    }
+    $('libMore').innerHTML=more;
+  }
+  function render(){renderFields();renderList();if(issues)renderIssues();placeholder();}
+
+  /* 검색창 */
+  var timer=null;
+  function syncURL(){try{history.replaceState(null,'',location.pathname+qs()+location.hash);}catch(e){}}
+  function onQuery(){
+    st.q=$('q').value; syncURL();
+    if(DC.terms(st.q).length) loadNewsText();
+    render();
+  }
+  $('q').value=st.q;
+  $('q').addEventListener('input',function(){clearTimeout(timer);timer=setTimeout(onQuery,120);});
+  $('q').addEventListener('keydown',function(e){if(e.key==='Escape'){$('q').value='';onQuery();}});
+  $('searchForm').addEventListener('submit',function(e){e.preventDefault();clearTimeout(timer);onQuery();$('q').blur();});
+  $('qClear').addEventListener('click',function(){$('q').value='';onQuery();$('q').focus();});
+  function onMore(e){
+    var b=e.target.closest('button[data-go]'); if(!b) return;
+    var g=b.dataset.go;
+    if(g==='all'){st.f=null;st.type="전체";render();}
+    else if(g==='news'){location.hash='news';}
+    else if(g==='lib'){location.hash='';setTab("lib");}
+    window.scrollTo({top:$('searchForm').getBoundingClientRect().top+window.scrollY-90,behavior:'smooth'});
+  }
+  $('libMore').addEventListener('click',onMore);
+  $('newsMore').addEventListener('click',onMore);
 
   $('fields').addEventListener('click',function(e){var b=e.target.closest('.field-btn');if(!b)return;if(b.id==='newsCard'){location.hash='news';window.scrollTo(0,0);return;}var f=+b.dataset.f;st.f=(st.f===f)?null:f;render();});
   $('types').addEventListener('click',function(e){var b=e.target.closest('.chip');if(!b)return;st.type=b.dataset.t;render();});
   $('showAll').addEventListener('click',function(){st.f=null;render();});
 
   DC.api("listLibrary").then(function(r){items=r.items||[];render();});
+  /* 관련 키워드(library/keywords.json): 화면에는 안 보이고 검색에만 쓰임 */
+  fetch('library/keywords.json?v='+Date.now()).then(function(r){return r.ok?r.json():{};}).then(function(d){kw=d||{};if(items.length)render();}).catch(function(){});
 
   /* ---------- 웰다잉 뉴스 (저장소 news/ 폴더의 JSON을 읽음) ---------- */
   function nocache(u){return u+'?v='+Date.now();}
   function getJSON(u){return fetch(nocache(u)).then(function(r){if(!r.ok)throw 0;return r.json();});}
   function setTab(t){
-    var news=t==="news";
+    var news=t==="news"; tab=news?"news":"lib";
     $('tabLib').setAttribute('aria-selected',!news); $('tabNews').setAttribute('aria-selected',news);
     $('libPane').hidden=news; $('newsPane').hidden=!news;
     if(news) loadIssues();
+    if(news&&DC.terms(st.q).length) loadNewsText();
+    placeholder();
+    if(news) renderIssues(); else if(items.length) renderList();
   }
-  $('tabLib').onclick=function(){history.replaceState(null,'',location.pathname);setTab("lib");};
-  $('tabNews').onclick=function(){history.replaceState(null,'',location.pathname+'#news');setTab("news");};
+  $('tabLib').onclick=function(){history.replaceState(null,'',location.pathname+qs());setTab("lib");};
+  $('tabNews').onclick=function(){history.replaceState(null,'',location.pathname+qs()+'#news');setTab("news");};
+  /* 뉴스 본문 검색용 글자(news/search.json, tools/build.py가 만듦) — 검색할 때만 불러옴 */
+  function loadNewsText(){
+    if(newsText||loadNewsText.busy) return;
+    loadNewsText.busy=true;
+    loadIssues();
+    getJSON('news/search.json').then(function(d){newsText={};(d.issues||[]).forEach(function(x){newsText[x.id]=x.text;});})
+      .catch(function(){newsText={};})
+      .then(function(){render();});
+  }
 
   function loadIssues(){
     if(issues){renderIssues();return Promise.resolve();}
@@ -170,9 +276,20 @@
       .catch(function(){issues=[];renderIssues();});
   }
   function renderIssues(){
-    $('newsList').innerHTML=issues.length?issues.map(function(x){
-      return '<li class="item"><a class="open" href="news/'+esc(x.id)+'.html"><span class="meta"><span class="issue-no">제'+esc(x.no)+'호</span><span>'+esc(x.range)+'</span></span><span class="ttl">'+esc(x.title)+'</span><span class="sum">'+esc(x.sum)+'</span></a></li>';
-    }).join(''):'<li class="empty">첫 호를 준비하고 있습니다.</li>';
+    if(!issues) return;
+    var ts=DC.terms(st.q), rows=issues;
+    if(ts.length){
+      if(!newsText){$('newsList').innerHTML='<li class="empty">찾는 중입니다…</li>';return;}
+      rows=ranked(newsMatches(ts),ts,function(x,ts){return ts.reduce(function(a,t){return a+(DC.has(x.title,t)?3:0)+(DC.has(x.sum,t)?3:0)+1;},0);});
+    }
+    $('newsList').innerHTML=rows.length?rows.map(function(x){
+      return '<li class="item"><a class="open" href="news/'+esc(x.id)+'.html'+qs()+'"><span class="meta"><span class="issue-no">제'+esc(x.no)+'호</span><span>'+esc(x.range)+'</span></span><span class="ttl">'+DC.markHTML(x.title,ts)+'</span><span class="sum">'+DC.markHTML(x.sum,ts)+'</span>'+(ts.length?snipFor(x.title+' '+x.sum,newsText[x.id],'',ts):'')+'</a></li>';
+    }).join(''):'<li class="empty">'+(ts.length?'검색어가 들어간 웰다잉 뉴스가 없습니다.':'첫 호를 준비하고 있습니다.')+'</li>';
+    if(tab==="news") resultLine(rows.length,'웰다잉 뉴스');
+    var more='';
+    if(ts.length){var n=items.filter(function(x){return libMatch(x,ts);}).length;
+      if(n) more='<p><span>주제별 자료에서도 <b>'+n+'건</b> 찾았습니다.</span><button type="button" data-go="lib">주제별 자료에서 보기 →</button></p>';}
+    $('newsMore').innerHTML=more;
   }
 
   function openIssue(id,draft){
