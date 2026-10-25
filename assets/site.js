@@ -18,7 +18,7 @@ var DC = (function(){
 
   /* ---------- 머리글·바닥글 ---------- */
   function chrome(current){
-    var menu = [["about.html","소개"],["library.html","자료실"],["thoughts.html","생각 나누기"],["lecture.html","강의 신청"]];
+    var menu = [["about.html","소개"],["library.html","자료실"],["check.html","자가진단"],["thoughts.html","생각 나누기"],["lecture.html","강의 신청"]];
     var nav = menu.map(function(m){return '<a href="'+m[0]+'"'+(m[0]===current?' aria-current="page"':'')+'>'+m[1]+'</a>';}).join('');
     var head = document.getElementById('site-header');
     if(head && !CONFIG.API_URL) head.insertAdjacentHTML('beforebegin','<p class="pilot">시범 운영 중입니다. 지금 보이는 글과 자료는 예시이며, 새로 남긴 글은 저장되지 않습니다.</p>');

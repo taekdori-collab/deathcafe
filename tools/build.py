@@ -35,7 +35,7 @@ AUTHOR = "차준택"
 FIELDS = ["왜 죽음학인가", "죽음과 죽어감", "생애말기와 연명의료", "죽음준비"]
 STATIC_PAGES = [  # (경로, 우선순위)
     ("", "1.0"), ("library.html", "0.9"), ("about.html", "0.8"),
-    ("lecture.html", "0.8"), ("thoughts.html", "0.7"),
+    ("lecture.html", "0.8"), ("check.html", "0.8"), ("thoughts.html", "0.7"),
 ]
 SAFE_ID = re.compile(r"^[A-Za-z0-9_-]{1,64}$")
 

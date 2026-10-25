@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<!-- Google Analytics (방문자 통계) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4SY5YWQJR"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-Y4SY5YWQJR');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>웰다잉 자가진단 | Death Cafe 데스카페</title>
+<meta name="description" content="12개의 질문으로 알아보는 나의 웰다잉 준비도. 죽음 바라보기, 죽음과 죽어감, 생애말기 의료, 죽음 준비 네 영역의 점수와 오늘 가족에게 건넬 질문을 알려드립니다.">
+<link rel="canonical" href="https://deathcafe.co.kr/check.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Death Cafe 데스카페">
+<meta property="og:title" content="나의 웰다잉 준비도는 몇 점일까요? | 데스카페 자가진단">
+<meta property="og:description" content="3분, 12문항. 삶의 마지막을 얼마나 준비하고 있는지, 어디서부터 시작하면 좋을지 알려드립니다. 답변은 저장되지 않습니다.">
+<meta property="og:url" content="https://deathcafe.co.kr/check.html">
+<meta property="og:image" content="https://deathcafe.co.kr/assets/profile.jpg">
+<meta property="og:locale" content="ko_KR">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .chk{max-width:680px;display:flex;flex-direction:column;gap:28px;padding-block:28px 64px;}
+  .chk section{display:flex;flex-direction:column;gap:22px;}
+  .chk h1{font-size:clamp(1.8rem,5.6vw,2.5rem);font-weight:700;}
+  .chk h2{font-size:clamp(1.25rem,4.2vw,1.55rem);}
+  .chk h3{font-size:1.15rem;}
+  .chk p{margin:0;}
+  .soft{color:var(--text-soft);}
+  .faint{color:var(--text-faint);font-size:.86rem;line-height:1.65;}
+  .quote{font-family:'Noto Serif KR',serif;font-size:1.08rem;color:var(--accent);border-left:2px solid var(--accent);padding-left:14px;}
+
+  /* 촛불: 답할수록, 준비할수록 빛이 밝아짐 */
+  .lamp{position:relative;height:110px;display:grid;place-items:center;}
+  .glow{position:absolute;width:210px;height:210px;border-radius:50%;
+    background:radial-gradient(circle,color-mix(in srgb,var(--accent) calc(var(--g,.18)*100%),transparent) 0%,transparent 65%);transition:background .6s ease;}
+  .candle-set{position:relative;display:flex;flex-direction:column;align-items:center;}
+  .flame{width:16px;height:28px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:linear-gradient(to top,#f0be66,#fff3d4);
+    box-shadow:0 0 16px rgba(240,190,102,.75);animation:flick 2.6s ease-in-out infinite;transform-origin:50% 100%;}
+  .wax{width:13px;height:40px;margin-top:4px;border-radius:2px;background:var(--surface-2);border:1px solid var(--line);}
+  @keyframes flick{0%,100%{transform:scale(1) rotate(-1deg)}50%{transform:scale(1.06,1.1) rotate(1.5deg)}}
+  @media (prefers-reduced-motion:reduce){.flame{animation:none}.glow{transition:none}}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{font-size:.82rem;padding:3px 11px;border:1px solid var(--line);border-radius:999px;color:var(--text-soft);}
+  .areas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 20px;}
+  @media (max-width:480px){.areas{grid-template-columns:1fr;}}
+  .area{padding:12px 0;border-top:1px solid var(--line);display:flex;flex-direction:column;}
+  .area small{font-size:.72rem;font-weight:700;letter-spacing:.08em;color:var(--accent);}
+  .area b{font-family:'Noto Serif KR',serif;font-weight:600;}
+  .area span{font-size:.86rem;color:var(--text-soft);}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+
+  /* 문항 */
+  .prog{display:flex;flex-direction:column;gap:8px;}
+  .prog-top{display:flex;justify-content:space-between;gap:12px;font-size:.84rem;color:var(--text-faint);font-variant-numeric:tabular-nums;}
+  .prog-top b{color:var(--accent);font-weight:700;}
+  .bar{height:3px;background:var(--line);border-radius:2px;overflow:hidden;}
+  .bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .4s ease;}
+  .qcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:24px 20px;display:flex;flex-direction:column;gap:18px;}
+  .opts{display:flex;flex-direction:column;gap:10px;}
+  .opt{text-align:left;font:inherit;font-size:.98rem;line-height:1.5;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:13px 15px;cursor:pointer;}
+  .opt:hover{border-color:var(--accent);}
+  .opt[aria-checked="true"]{border-color:var(--accent);background:var(--accent-soft);}
+
+  /* 결과 */
+  .score{font-family:'Noto Serif KR',serif;color:var(--text-faint);font-variant-numeric:tabular-nums;}
+  .scores{display:flex;flex-direction:column;gap:12px;}
+  .srow{display:grid;grid-template-columns:8.5em minmax(0,1fr) 2.8em;gap:12px;align-items:center;font-size:.92rem;}
+  @media (max-width:440px){.srow{grid-template-columns:7.2em minmax(0,1fr) 2.6em;}}
+  .srow .t{height:8px;background:var(--line);border-radius:4px;overflow:hidden;}
+  .srow .t i{display:block;height:100%;border-radius:4px;background:var(--text-faint);}
+  .srow.low .t i{background:var(--accent);}
+  .srow.low .n{color:var(--accent);font-weight:700;}
+  .srow .v{text-align:right;color:var(--text-faint);font-variant-numeric:tabular-nums;}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px 20px;display:flex;flex-direction:column;gap:10px;}
+  .panel.hl{border-color:var(--accent);background:color-mix(in srgb,var(--accent-soft) 55%,var(--surface));}
+  .family{font-family:'Noto Serif KR',serif;font-size:1.25rem;line-height:1.55;}
+  .next{list-style:none;margin:0;padding:0;}
+  .next a{display:flex;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);text-decoration:none;}
+  .next a:hover{color:var(--accent);}
+  .next a span{font-size:.82rem;color:var(--text-faint);white-space:nowrap;}
+  .toast{font-size:.86rem;color:var(--accent);}
+  textarea.copy{min-height:130px;font-size:.86rem;}
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+<main class="wrap chk">
+  <div class="lamp" aria-hidden="true"><div class="glow" id="glow"></div><div class="candle-set"><div class="flame"></div><div class="wax"></div></div></div>
+
+  <!-- 시작 -->
+  <section id="intro">
+    <span class="eyebrow">웰다잉 준비도 자가진단</span>
+    <h1>나의 웰다잉 준비도는<br>몇 점일까요?</h1>
+    <p class="quote">죽음을 생각하면, 사람의 마음은 착해집니다.</p>
+    <p class="soft">12개의 질문에 답하면 지금 나는 삶의 마지막을 얼마나 준비하고 있는지, 어느 부분부터 시작하면 좋을지 알려드립니다. 정답은 없습니다. 지금의 나와 가장 가까운 것을 골라 주세요.</p>
+    <div class="chips"><span class="chip">약 3분</span><span class="chip">12문항</span><span class="chip">답변은 저장되지 않습니다</span></div>
+    <div class="areas">
+      <div class="area"><small>영역 1</small><b>죽음 바라보기</b><span>내 삶과 죽음을 생각해 본 적이 있나요</span></div>
+      <div class="area"><small>영역 2</small><b>죽음과 죽어감</b><span>임종과 상실을 이해하고 있나요</span></div>
+      <div class="area"><small>영역 3</small><b>생애말기 의료</b><span>연명의료에 대한 내 뜻을 정해 두었나요</span></div>
+      <div class="area"><small>영역 4</small><b>죽음 준비</b><span>남은 가족을 위한 정리를 했나요</span></div>
+    </div>
+    <div class="row"><button class="btn btn-primary" id="start" type="button">자가진단 시작하기</button></div>
+  </section>
+
+  <!-- 문항 -->
+  <section id="quiz" hidden>
+    <div class="prog">
+      <div class="prog-top"><b id="qarea"></b><span id="qnum"></span></div>
+      <div class="bar"><i id="qbar"></i></div>
+    </div>
+    <div class="qcard">
+      <h2 id="qtext"></h2>
+      <p class="faint">지금의 나와 가장 가까운 것을 골라 주세요. (키보드 1~4로도 고를 수 있습니다)</p>
+      <div class="opts" id="opts" role="radiogroup" aria-labelledby="qtext"></div>
+    </div>
+    <div class="row"><button class="btn btn-ghost btn-small" id="back" type="button">이전 질문</button></div>
+  </section>
+
+  <!-- 결과 -->
+  <section id="result" hidden aria-live="polite"></section>
+
+  <p class="faint">이 진단은 스스로를 돌아보기 위한 참고용이며 의학적·법률적 판단을 대신하지 않습니다.</p>
+</main>
+<div id="site-footer"></div>
+<script src="assets/site.js"></script>
+<script>
+(function(){
+  DC.chrome("check.html");
+  var SITE="https://deathcafe.co.kr/check.html";
+  var YT="https://www.youtube.com/@spiritcare139";
+  function ga(name,params){try{if(window.gtag)gtag('event',name,params||{});}catch(e){}}
+
+  var AREAS=[
+   {name:"죽음 바라보기",f:1,lib:"자료실 · 왜 죽음학인가",
+    tip:"죽음을 생각하는 일은 우울한 일이 아니라 지금의 삶을 다시 보는 일입니다. 부담 없는 영화 한 편이나 짧은 글 하나로 시작해 보세요.",
+    family:"나중에 사람들이 당신을 어떤 사람으로 기억해 주면 좋겠어요?"},
+   {name:"죽음과 죽어감",f:2,lib:"자료실 · 죽음과 죽어감",
+    tip:"임종의 과정과 애도의 모습을 미리 알면, 사랑하는 사람의 마지막 곁을 덜 두렵게 지킬 수 있고 나의 슬픔도 돌볼 수 있습니다.",
+    family:"지금까지 떠나보낸 사람 중에 가장 그리운 사람은 누구예요?"},
+   {name:"생애말기 의료",f:3,lib:"자료실 · 생애말기와 연명의료",
+    tip:"의식이 없어지면 내 뜻을 말할 수 없습니다. 사전연명의료의향서는 만 19세 이상이면 보건복지부 지정 등록기관에서 작성할 수 있고, 언제든 바꾸거나 철회할 수 있습니다.",
+    family:"만약 의식 없이 기계에 의지해야 한다면, 어디까지 치료받고 싶어요?"},
+   {name:"죽음 준비",f:4,lib:"자료실 · 죽음준비",
+    tip:"남은 가족이 가장 힘들어하는 것은 슬픔과 함께 찾아오는 '무엇이 어디 있는지 모르는 막막함'입니다. 보험·통장·장례 희망을 한 장에 적어 두는 것부터 시작해 보세요.",
+    family:"마지막에 꼭 남기고 싶은 말이 있다면 뭐예요?"}
+  ];
+  var Q=[
+   {a:0,q:"나는 나의 죽음에 대해 진지하게 생각해 본 적이 있다.",o:["거의 없다. 생각하고 싶지 않다","가끔 스치듯 생각한다","종종 생각하고, 삶을 돌아보는 계기가 된다","깊이 생각했고, 내 나름의 생각이 정리되어 있다"]},
+   {a:0,q:"가족이나 가까운 사람과 죽음에 대한 이야기를 나눌 수 있다.",o:["꺼내기 어렵고 분위기가 무거워진다","농담처럼은 말해 봤다","진지하게 이야기한 적이 한두 번 있다","편하게 이야기를 나누는 편이다"]},
+   {a:0,q:"‘오늘이 내 삶의 마지막 날이라면?’ 하고 물으면 떠오르는 것이 있다.",o:["아무것도 떠오르지 않는다","막연하게 떠오른다","만나고 싶은 사람, 하고 싶은 일이 분명히 있다","이미 그 일들을 하나씩 하며 살고 있다"]},
+   {a:1,q:"사람이 임종을 맞을 때 몸과 마음에 어떤 변화가 오는지 알고 있다.",o:["전혀 모른다","드라마나 영화로 본 정도다","책이나 강의로 들어 본 적이 있다","가족의 임종을 지키며 겪었거나 잘 알고 있다"]},
+   {a:1,q:"소중한 사람을 잃었을 때, 슬픔을 견디며 나를 돌보는 방법을 알고 있다.",o:["생각해 본 적이 없다","그냥 시간이 지나면 괜찮아질 거라 생각한다","나에게 맞는 방법이 몇 가지 있다","애도의 과정을 이해하고, 도움을 청할 곳도 알고 있다"]},
+   {a:1,q:"호스피스·완화의료가 무엇인지 다른 사람에게 설명할 수 있다.",o:["처음 듣거나 잘 모른다","이름만 들어 봤다","대략 설명할 수 있다","이용 방법까지 알고 있다"]},
+   {a:2,q:"사전연명의료의향서에 대해 알고 있다.",o:["처음 들어 본다","들어 봤지만 내용은 잘 모른다","내용을 알고, 작성을 고민하고 있다","이미 작성해 등록했다"]},
+   {a:2,q:"내가 연명의료를 어디까지 원하는지 가족이 알고 있다.",o:["나도 아직 정하지 않았다","내 생각은 있지만 말한 적이 없다","한두 명에게 지나가듯 말했다","가족과 분명하게 이야기를 나눴다"]},
+   {a:2,q:"내가 스스로 결정할 수 없게 되면, 대신 내 뜻을 전할 사람이 정해져 있다.",o:["생각해 본 적이 없다","막연히 누군가 하겠지 싶다","마음속으로는 정해 두었다","그 사람과 직접 이야기해 두었다"]},
+   {a:3,q:"내가 원하는 장례 방식(규모, 화장·매장, 모시고 싶은 곳 등)을 정해 두었다.",o:["생각해 본 적이 없다","가족이 알아서 하면 된다고 생각한다","대략적인 희망은 있다","구체적으로 정해 가족에게 알렸다"]},
+   {a:3,q:"보험·통장·중요 서류가 어디에 있는지 가족이 알고 있다.",o:["나만 알고 있거나 나도 정확히 모른다","일부만 안다","대부분 알지만 정리된 문서는 없다","한곳에 정리해 두었고 가족도 알고 있다"]},
+   {a:3,q:"사랑하는 사람들에게 남기고 싶은 말을 글로 정리해 본 적이 있다.",o:["없다","생각만 해 봤다","짧게라도 써 본 적이 있다","편지나 엔딩노트로 정리해 두었다"]}
+  ];
+  var TYPES=[
+   {min:0,name:"첫 페이지를 펼친 사람",desc:"죽음은 아직 먼 이야기처럼 느껴지실 겁니다. 그런데 이 진단을 끝까지 하셨다는 것 자체가 시작입니다. 많은 사람이 이 질문 앞에서 창을 닫습니다."},
+   {min:10,name:"생각을 시작한 사람",desc:"마음속에 생각은 있지만 아직 말이나 글이 되지 못한 상태입니다. 그 생각을 한 문장으로 꺼내는 것이 다음 걸음입니다."},
+   {min:19,name:"대화를 시작한 사람",desc:"죽음을 피하지 않고 바라보고 계십니다. 이제는 그 생각을 가족과 나누고, 문서로 남겨 두는 일이 남았습니다."},
+   {min:28,name:"준비하며 사는 사람",desc:"삶의 마지막을 준비하는 일이 곧 지금을 잘 사는 일임을 알고 계십니다. 주변 사람에게도 이 준비를 권해 주세요. 그것도 큰 선물입니다."}
+  ];
+
+  var $=function(id){return document.getElementById(id);};
+  var i=0, ans=Q.map(function(){return null;}), busy=false;
+
+  function glow(p){$("glow").style.setProperty("--g",(0.16+0.5*p).toFixed(2));}
+  function show(id){["intro","quiz","result"].forEach(function(s){$(s).hidden=(s!==id);});window.scrollTo({top:0,behavior:"smooth"});}
+
+  function render(){
+    var q=Q[i];
+    $("qarea").textContent="영역 "+(q.a+1)+" · "+AREAS[q.a].name;
+    $("qnum").textContent=(i+1)+" / "+Q.length;
+    $("qbar").style.width=(i/Q.length*100)+"%";
+    $("qtext").textContent=q.q;
+    var box=$("opts"); box.innerHTML="";
+    q.o.forEach(function(t,k){
+      var b=document.createElement("button");
+      b.type="button"; b.className="opt"; b.id="opt-"+i+"-"+k; b.textContent=t;
+      b.setAttribute("role","radio"); b.setAttribute("aria-checked",ans[i]===k?"true":"false");
+      b.onclick=function(){pick(k);};
+      box.appendChild(b);
+    });
+    $("back").style.visibility=i===0?"hidden":"visible";
+    glow(i/Q.length); busy=false;
+  }
+  function pick(k){
+    if(busy) return; busy=true;
+    ans[i]=k;
+    Array.prototype.forEach.call($("opts").children,function(b,n){b.setAttribute("aria-checked",n===k?"true":"false");});
+    setTimeout(function(){ if(i<Q.length-1){i++;render();} else finish(); },260);
+  }
+
+  function finish(){
+    var area=[0,0,0,0]; Q.forEach(function(q,n){area[q.a]+=ans[n];});
+    var total=area.reduce(function(s,v){return s+v;},0);
+    var type=TYPES.filter(function(t){return total>=t.min;}).pop();
+    var low=area.indexOf(Math.min.apply(null,area)), L=AREAS[low];
+    glow(0.25+0.75*total/36);
+    ga("wd_check_complete",{score:total,result_type:type.name,low_area:L.name});
+
+    var rows=area.map(function(v,n){
+      return '<div class="srow'+(n===low?' low':'')+'"><span class="n">'+AREAS[n].name+'</span><div class="t"><i style="width:'+(v/9*100)+'%"></i></div><span class="v">'+v+'/9</span></div>';
+    }).join("");
+    var share="[데스카페 웰다잉 준비도 자가진단]\n나의 유형: "+type.name+" ("+total+"/36점)\n가장 먼저 채울 영역: "+L.name+"\n오늘 가족에게 건넬 질문: \""+L.family+"\"\n나도 해 보기: "+SITE;
+
+    $("result").innerHTML=
+      '<div style="display:flex;flex-direction:column;gap:10px">'+
+        '<span class="eyebrow">나의 웰다잉 준비 유형</span>'+
+        '<h1>'+type.name+'</h1>'+
+        '<span class="score">총점 '+total+' / 36</span>'+
+        '<p class="soft">'+type.desc+'</p>'+
+      '</div>'+
+      '<div class="scores">'+rows+'</div>'+
+      '<div class="panel"><span class="eyebrow">가장 먼저 채우면 좋은 영역</span><h3>'+L.name+'</h3><p>'+L.tip+'</p></div>'+
+      '<div class="panel hl"><span class="eyebrow">오늘 저녁, 가족에게 건네 볼 질문 하나</span>'+
+        '<p class="family">“'+L.family+'”</p>'+
+        '<p class="faint">답을 듣는 것보다 묻는 것이 먼저입니다. 식사 자리에서 가볍게 꺼내 보세요.</p></div>'+
+      '<ul class="next">'+
+        '<li><a href="library.html#f'+L.f+'" data-cta="library">'+L.lib+'에서 더 알아보기<span>자료실 →</span></a></li>'+
+        '<li><a href="'+YT+'" target="_blank" rel="noopener" data-cta="youtube">영화로 풀어가는 웰다잉 이야기<span>유튜브 ↗</span></a></li>'+
+        '<li><a href="thoughts.html" data-cta="thoughts">진단을 해 보며 든 생각 남기기<span>생각 나누기 →</span></a></li>'+
+        '<li><a href="lecture.html" data-cta="lecture">우리 기관·모임에 웰다잉 강의 신청하기<span>강의 신청 →</span></a></li>'+
+      '</ul>'+
+      '<div class="panel"><span class="eyebrow">가족·친구와 함께 해 보기</span>'+
+        '<p class="faint">버튼을 누르면 결과와 진단 주소가 복사됩니다. 카카오톡에 붙여 넣어 함께 해 보자고 권해 보세요.</p>'+
+        '<div class="row"><button class="btn btn-primary" id="copy" type="button">결과 복사하기</button><span class="toast" id="toast" aria-live="polite"></span></div>'+
+        '<textarea class="copy" id="copybox" readonly hidden aria-label="복사할 결과"></textarea></div>'+
+      '<div class="row"><button class="btn btn-ghost btn-small" id="again" type="button">처음부터 다시 하기</button></div>';
+    show("result");
+
+    Array.prototype.forEach.call(document.querySelectorAll("#result [data-cta]"),function(a){
+      a.addEventListener("click",function(){ga("wd_check_cta",{target:a.getAttribute("data-cta"),low_area:L.name});});
+    });
+    $("copy").onclick=function(){
+      ga("wd_check_share",{result_type:type.name});
+      function fallback(){var t=$("copybox");t.value=share;t.hidden=false;t.focus();t.select();$("toast").textContent="아래 글을 길게 눌러 복사해 주세요.";}
+      try{navigator.clipboard.writeText(share).then(function(){$("toast").textContent="복사했습니다. 카카오톡에 붙여 넣어 보세요.";},fallback);}catch(e){fallback();}
+    };
+    $("again").onclick=function(){ans=Q.map(function(){return null;});i=0;glow(0);show("intro");};
+  }
+
+  $("start").onclick=function(){ga("wd_check_start");i=0;show("quiz");render();};
+  $("back").onclick=function(){if(i>0){i--;render();}};
+  document.addEventListener("keydown",function(e){
+    if($("quiz").hidden||e.altKey||e.ctrlKey||e.metaKey) return;
+    var k=parseInt(e.key,10); if(k>=1&&k<=4) pick(k-1);
+  });
+  glow(0);
+})();
+</script>
+</body>
+</html>
