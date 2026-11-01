@@ -223,6 +223,11 @@ def item_page(x):
 
 
 # ---------------------------------------------------------------- 웰다잉 뉴스
+def issue_label(x):
+    """정기 호는 '제N호', 특별 소식은 label 값(예: '특별 소식')"""
+    return x.get("label") or ("제%s호" % x.get("no"))
+
+
 def issue_page(x):
     path = "news/%s.html" % x["id"]
     d = kdate(x.get("date")) or kdate(x["id"])
@@ -239,8 +244,8 @@ def issue_page(x):
     out = [head("%s | 데스카페 웰다잉 뉴스" % x.get("title", ""), desc.strip(), path, jsonld=ld),
            '<main class="wrap narrow"><article class="detail">',
            '<a class="back" href="library.html#news">← 웰다잉 뉴스 목록</a>',
-           '<div class="meta"><span class="issue-no">제%s호</span><span>%s</span><span>웰다잉 뉴스</span></div>'
-           % (esc(x.get("no")), esc(x.get("range"))),
+           '<div class="meta"><span class="issue-no">%s</span><span>%s</span><span>웰다잉 뉴스</span></div>'
+           % (esc(issue_label(x)), esc(x.get("range"))),
            "<h1>%s</h1>" % esc(x.get("title"))]
     if x.get("lead"):
         out.append('<p class="lead">%s</p>' % esc(x["lead"]))
@@ -258,7 +263,10 @@ def issue_page(x):
         out.append('<li class="news-item"><div class="meta">%s</div><h2>%s</h2><p class="sm">%s</p><div class="src">%s</div>%s</li>'
                    % (badge, esc(n.get("headline")), esc(n.get("summary")), src, view))
     out.append('</ol>')
-    out.append('<p class="note">기사 요약은 원문을 바탕으로 데스카페가 다시 쓴 것입니다. 정확한 내용은 원문을 확인해 주세요.</p>')
+    if x.get("note"):
+        out.append('<p class="note">%s</p>' % esc(x["note"]))
+    else:
+        out.append('<p class="note">기사 요약은 원문을 바탕으로 데스카페가 다시 쓴 것입니다. 정확한 내용은 원문을 확인해 주세요.</p>')
     if x.get("care"):
         out.append('<p class="note">마음이 많이 힘드시다면 혼자 견디지 마세요. 자살예방 상담전화 109 (24시간)</p>')
     out.append('<div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">'
@@ -290,8 +298,8 @@ def prefill_library_html(items, issues):
            esc(FIELDS[int(x.get("f") or 0)]), esc(x.get("date")), esc(x.get("title")), esc(x.get("sum")))
         for x in items) or '<li class="empty">불러오는 중입니다.</li>'
     news_li = "".join(
-        '<li class="item"><a class="open" href="news/%s.html"><span class="meta"><span class="issue-no">제%s호</span><span>%s</span></span><span class="ttl">%s</span><span class="sum">%s</span></a></li>'
-        % (esc(x["id"]), esc(x.get("no")), esc(x.get("range")), esc(x.get("title")), esc(x.get("sum")))
+        '<li class="item"><a class="open" href="news/%s.html"><span class="meta"><span class="issue-no">%s</span><span>%s</span></span><span class="ttl">%s</span><span class="sum">%s</span></a></li>'
+        % (esc(x["id"]), esc(issue_label(x)), esc(x.get("range")), esc(x.get("title")), esc(x.get("sum")))
         for x in issues) or '<li class="empty">불러오는 중입니다.</li>'
     src = re.sub(r'(<ul class="list" id="list">).*?(</ul>)', lambda m: m.group(1) + lib_li + m.group(2), src, flags=re.S)
     src = re.sub(r'(<ul class="list" id="newsList">).*?(</ul>)', lambda m: m.group(1) + news_li + m.group(2), src, flags=re.S)

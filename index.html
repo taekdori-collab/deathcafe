@@ -165,10 +165,10 @@
     paintNewsField();
   });
   /* 자료실 5번 카드: 웰다잉 뉴스 (최신 호 제목 표시) */
-  var newsTop=null;
+  var newsTop=null; function ilabel(x){return x.label||('제'+x.no+'호');}
   function newsField(){return '<a class="fld" id="fldNews" href="library.html#news"><span class="n">05</span><span class="t">웰다잉 뉴스</span><span class="latest"><span>자료 준비 중</span></span></a>';}
   function paintNewsField(){var el=document.getElementById('fldNews'); if(!el||!newsTop) return;
-    el.querySelector('.latest').innerHTML='<span>최근 자료 · 제'+esc(newsTop.no)+'호</span>'+esc(newsTop.title);}
+    el.querySelector('.latest').innerHTML='<span>최근 자료 · '+esc(ilabel(newsTop))+'</span>'+esc(newsTop.title);}
   /* 이번 주 웰다잉 뉴스: 가장 최근 호를 보여줌 (게시된 호가 없으면 섹션을 숨김) */
   function getJSON(u){return fetch(u+'?v='+Date.now()).then(function(r){if(!r.ok)throw 0;return r.json();});}
   getJSON('news/index.json').then(function(ix){
@@ -178,10 +178,10 @@
       var fresh=(Date.now()-new Date(x.id+'T00:00:00+09:00').getTime())<8*864e5;
       var url='news/'+x.id+'.html';
       document.getElementById('newsCard').innerHTML=
-        '<div><div class="meta"><span class="no">제'+esc(x.no)+'호</span>'+(fresh?'<span class="new">NEW</span>':'')+'<span>'+esc(x.range)+'</span></div>'
+        '<div><div class="meta"><span class="no">'+esc(ilabel(x))+'</span>'+(fresh?'<span class="new">NEW</span>':'')+'<span>'+esc(x.range)+'</span></div>'
         +'<h3>'+esc(x.title)+'</h3>'
         +(x.lead?'<p class="lead">'+esc(x.lead)+'</p>':'')
-        +'<div class="acts"><a class="btn btn-primary btn-small" href="'+url+'">이번 호 읽기</a><span class="empty" style="font-size:.84rem">매주 주말, 함께 생각해 볼 소식 다섯 가지</span></div></div>'
+        +'<div class="acts"><a class="btn btn-primary btn-small" href="'+url+'">'+(x.label?'소식 읽기':'이번 호 읽기')+'</a><span class="empty" style="font-size:.84rem">'+(x.label?'데스카페가 전하는 웰다잉 특별 소식':'매주 주말, 함께 생각해 볼 소식 다섯 가지')+'</span></div></div>'
         +'<ol>'+(x.items||[]).map(function(n){return '<li><a href="'+url+'" style="color:inherit;text-decoration:none">'+esc(n.headline)+'</a></li>';}).join('')+'</ol>';
       document.getElementById('newsBlk').hidden=false;
     });
