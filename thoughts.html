@@ -51,6 +51,10 @@
   .spacer{flex:1;}
   .pw-box{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
   .pw-box input{max-width:180px;padding:7px 11px;font-size:.88rem;}
+  .reply{margin:2px 0 0;padding:12px 16px;border-left:2px solid var(--accent);background:var(--surface-2);border-radius:0 8px 8px 0;display:flex;flex-direction:column;gap:6px;}
+  .reply .rmeta{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;font-size:.8rem;color:var(--text-faint);}
+  .reply .rname{font-weight:700;color:var(--accent);font-size:.86rem;}
+  .reply p{margin:0;white-space:pre-wrap;font-size:.95rem;line-height:1.8;color:var(--text);}
 </style>
 </head>
 <body>
@@ -97,6 +101,7 @@
       <li>연락처, 주소 등 개인정보는 적지 말아 주세요. 실명을 쓰시면 모든 방문자에게 공개됩니다.</li>
       <li>"나만 보기" 글은 다른 방문자에게 보이지 않으며, 운영자만 확인할 수 있습니다.</li>
       <li>비밀번호는 글 삭제와 나만 보기 글 열람에 필요하며, 잊으시면 찾을 수 없습니다.</li>
+      <li>공개 글에는 운영자가 답글로 마음을 전하기도 합니다.</li>
       <li>서로를 아프게 하는 글은 예고 없이 삭제될 수 있습니다.</li>
       <li class="care">지금 마음이 많이 힘드시다면 혼자 견디지 마세요. 자살예방 상담전화 109(24시간)에서 이야기를 들어드립니다.</li>
     </ul>
@@ -113,13 +118,15 @@
 (function(){
   "use strict";
   DC.chrome("thoughts.html");
-  var esc=DC.esc, posts=[], ui={}, list=document.getElementById('posts');
+  var esc=DC.esc, posts=[], replies={}, ui={}, list=document.getElementById('posts');
 
   function render(){
     document.getElementById('total').textContent='글 '+posts.length+'개';
     list.innerHTML=posts.length?posts.map(function(p){
       var s=ui[p.id]||{}, priv=p.vis==="private", open=!priv||s.body;
       var content=open?'<p class="body">'+esc(s.body||p.body)+'</p>':'<p class="locked">작성자만 볼 수 있는 글입니다.</p>';
+      var rp=!priv&&replies[p.id];
+      if(rp&&rp.text) content+='<div class="reply"><div class="rmeta"><span class="rname">데스카페 운영자 차준택</span><span>'+esc(rp.date||'')+'</span></div><p>'+esc(rp.text)+'</p></div>';
       var acts='';
       if(!priv){var on=DC.isLiked('post',p.id);acts+='<button type="button" class="heart" data-like="'+p.id+'" aria-pressed="'+on+'">'+DC.HEART+'공감해요 <span>'+p.likes+'</span></button>';}
       acts+='<span class="spacer"></span>';
@@ -132,7 +139,10 @@
       return '<article class="post"><div class="meta"><span class="name">'+esc(p.name)+'</span><span>'+esc(p.date)+'</span>'+(priv?'<span class="tag">나만 보기</span>':'')+'</div>'+content+'<div class="actions">'+acts+'</div>'+(s.err?'<p class="err">'+esc(s.err)+'</p>':'')+'</article>';
     }).join(''):'<p class="locked">아직 남겨진 글이 없습니다. 첫 이야기를 남겨 주세요.</p>';
   }
-  function load(){DC.api("listPosts").then(function(r){posts=r.items||[];render();});}
+  function load(){
+    var rq=fetch('thoughts/replies.json?v='+Date.now()).then(function(r){return r.ok?r.json():{};}).catch(function(){return {};});
+    Promise.all([DC.api("listPosts"),rq]).then(function(a){posts=a[0].items||[];replies=a[1]||{};render();});
+  }
   function st(id){return ui[id]||(ui[id]={});}
   function find(id){return posts.filter(function(p){return p.id===id;})[0];}
 
